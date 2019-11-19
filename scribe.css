@@ -1,0 +1,45 @@
+/*  _____________________________________________________________________________
+ * |                                                                             |
+ * |                    === WARNING: GLOBAL GADGET FILE ===                      |
+ * |                  Changes to this page affect many users.                    |
+ * | Please discuss changes on the talk page or on [[WT:Gadget]] before editing. |
+ * |_____________________________________________________________________________|
+ * 
+ * Imported from version 0.0.1 as of 2019-11-04 from [[:en:MediaWiki:Gadget-scribe.css]]
+ * Using this script allows you to edit articles in underrepresented wikipedias, see [[User:Eugene233/scribe]]
+ */
+
+ #mw-scribe-action-page-title{
+	font-size: 24px;
+	margin-bottom: 20px;
+	margin-right: 60px;
+	text-decoration: underline;
+}
+
+#mw-scribe-action-button-group{
+    overflow: hidden;
+    max-width: inherit;
+    margin-bottom: -3px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
+	width: 145px;
+}
+
+#mw-scribe-add-reference-button{
+	  border: none;
+	  color: white;
+	  padding: 20px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+	  margin: 4px 2px;
+}
+
+.oo-ui-textInputWidget .oo-ui-inputWidget-input {
+	border: 0px;
+}
