@@ -1,6 +1,6 @@
 ## Scribe wikimedia project
 
-Scribe is an editing tool for underserved language Wikipedias. This tool will allow editors to have a base to start with when translation is not possible. This will allow editors to choose a subject to write about according to their community interests and notability criteria, regardless of the existence of that topic in other Wikipedias. This tool has been conceived to add functionality to the Visual Editor of Mediawiki.
+Scribe is an editing tool for underserved language Wikipedias. This tool will allow editors to have a base to start with when translation is not possible. This will allow editors to choose a subject to write about according to their community interests and notability criteria, regardless of the existence of that topic in other Wikipedias. This tool has been conceived to add functionality to the Visual Editor of Mediawiki as a gadget.
 
 ### How to setup
 
@@ -17,4 +17,4 @@ core[ResourceLoader|dependencies=ext.visualEditor.core|mediawiki|mediawiki.api]|
 
 ```
 
-You can now test the tool when iusing Visual Editor to edit a Wiki
+You can now test the tool when using Visual Editor to edit a Wiki page.
