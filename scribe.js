@@ -350,7 +350,7 @@
             };
 
             ScribeDialog.prototype.getActionProcess = function ( action ) {
-                var dialog;
+                var dialog, sectionNumber;
                 console.log('action', action);
 
                 // The Done button has been clicked
@@ -380,19 +380,21 @@
                     if ( selectedSectionsToEdit.length !== 0 && 
                         viewControl < selectedSectionsToEdit[ viewControl ] ) {
                         
-                        // sn is the section number the user chose to edit
-                        var sn = selectedSectionsToEdit[ viewControl ];
-                        this.stackLayout.setItem( stackPanels[ sn ] ); 
+                        // sectionNumber is the section number the user chose to edit
+                        sectionNumber = selectedSectionsToEdit[ viewControl ];
+                        this.stackLayout.setItem( stackPanels[ sectionNumber ] );
+
                     } else if( selectedSectionsToEdit.length === 0 ) {
                         OO.ui.alert( 'Please select a section!' ).done( function () {
                             console.log( 'User closed the dialog.' );
                         } );
                         viewControl--;
                     }
-
                     viewControl++;
                     selectedSectionsToEdit = [];
-                    if ( viewControl  === ( stackPanels.length - 1 ) ) {
+                    if ( viewControl  === ( stackPanels.length - 1 ) ||
+                        sectionNumber === ( stackPanels.length -1 ) ) {
+
                         this.actions.setMode( 'final' );
                     }
                 } else {
