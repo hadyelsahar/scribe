@@ -17,4 +17,4 @@ core[ResourceLoader|dependencies=ext.visualEditor.core|mediawiki|mediawiki.api]|
 
 ```
 
-You can now test the tool when using Visual Editor to edit a Wiki
+You can now test the tool when using Visual Editor to edit a Wiki page.
