@@ -228,7 +228,14 @@
             autofocus: true
         } );
 
-        html = '<div id=\'slider\'>' + '<div id=\'ref_box\'> <p>We are Here</p></div></div>';
+        html = '<div id=\'mw-scribe-slider\'>' +
+                    '<div id=\'mw-scribe-ref-box\'>' +
+                        '<p id=\'mw-scribe-ref-text\'>Through time the core JavaScript functions and HTML output improves functionality</p>' +
+                        '<div id=\'mw-scribe-ref-link-box\'>' +
+                            '<a id=\'mw-scribe-ref-link\'> https://mediawiki.org/Special:Gadgets </a> <p id=\'mw-scribe-ref-domain\'>#SCIENCE</p>' +
+                        '</div>' +
+                    '</div></div>';
+
         referenceAddButton = new OO.ui.ButtonWidget( {
             label: '',
             align: 'center',

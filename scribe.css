@@ -16,7 +16,7 @@
 	text-decoration: underline;
 }
 
-#mw-scribe-action-button-group {
+#mw-scribe-action-button-group{
     overflow: hidden;
     max-width: inherit;
     margin-bottom: -3px;
@@ -26,12 +26,12 @@
 
 .mw-scribe-ref-btn {
 	margin-left: 175px;
-    margin-top: 50px;
+    margin-top: 20px;
     z-index: 1;
 }
 
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
 	width: 145px;
 }
 
@@ -48,7 +48,7 @@
 	border: 0px;
 }
 
-#slider {
+#mw-scribe-slider {
   position: relative;
   overflow: hidden;
   border-radius: 5px;
@@ -60,16 +60,61 @@
   z-index: -1;
 }
 
-#ref_box{
+/*.oo-ui-buttonElement-button{*/
+/*	border-radius: 40%;*/
+/*    z-index: 1;*/
+/*    background-color: green;*/
+/*    margin-left: 160px;*/
+/*    margin-top: -125px;*/
+/*}*/
+
+#mw-scribe-ref-box {
 	height: 70px;
-	background-color: white;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-radius: 5px;
-	margin: 10px 10px 10px 10px
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    margin: 10px 10px 10px 10px;
+    width: 350px;
+    padding-left: 5px;
+    margin-top: 12px;
 }
 
-.mw-scribe-reference-section{
+#mw-scribe-ref-link-box{
+	padding-top: 20px;
+    display: flex;
+}
+
+#mw-scribe-ref-link{
+	margin-top: 5px;
+    margin-left: 5px;
+    width: 200px;
+    display: flex;
+    line-height: normal;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#mw-scribe-ref-text {
+	width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 10px;
+    line-height: 1.5em;
+    /* height: 3em; */
+}
+
+#mw-scribe-ref-domain{
+	float: right;
+    padding-left: 80px;
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.mw-scribe-reference-section {
 	margin-top: -30px;
-    margin-left: 15px;
+    margin-left: 15px
 }
