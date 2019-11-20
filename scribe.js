@@ -222,12 +222,13 @@
         } );
 
         editSurface = new OO.ui.MultilineTextInputWidget( {
-            rows: 4,
+            rows: 17,
             autosize: true,
             placeholder: 'Start writing something here, select references from below',
             autofocus: true
         } );
 
+        html = '<div id=\'slider\'>' + '<div id=\'ref_box\'> <p>We are Here</p></div></div>';
         referenceAddButton = new OO.ui.ButtonWidget( {
             label: '',
             align: 'center',
@@ -236,13 +237,19 @@
                 'primary',
                 'progressive'
             ],
-            id: 'mw-scribe-add-reference-button'
+            classes: [ 'mw-scribe-ref-btn' ]
+        } );
+
+        referenceSection = new OO.ui.LabelWidget( {
+            label: $(html),
+            classes: [ 'mw-scribe-reference-section' ]
         } );
 
         sectionFieldSetItems.push( sectionTitle );
         sectionFieldSetItems.push( editButtonGroup );
         sectionFieldSetItems.push( editSurface );
         sectionFieldSetItems.push( referenceAddButton );
+        sectionFieldSetItems.push( referenceSection );
 
         editSectionPanel = addPanelElementsToPanel( sectionFieldSetItems );
         return editSectionPanel;
@@ -278,10 +285,14 @@
         return article_list;
     }
 
+    // function addReferenceSectionToPanel() {
+    //     var html = '<div id=\'slider\'>' + '<div id=\'ref_box\'> <p>We are Here</p></div></div>';
+    //     $('#mw-scribe-add-reference-button').append(html);
+    // }
     mw.hook( 've.activationComplete' ).add(function () {
         var articleSectionsPromise, homePageFieldSetElements,
             selectedSectionsToEdit = [];
-        
+
         articleSectionsPromise = getArticleListPromise( mw.config.get( 'wgTitle' ) );
         articleSectionsPromise.done( function ( data ) {
             var articleSections = data.parse.sections;
@@ -334,6 +345,7 @@
             ScribeDialog.prototype.getActionProcess = function ( action ) {
                 var dialog;
                 console.log('action', action);
+
                 // The Done button has been clicked
                 if ( action === 'save' ) {
                     // we get the fieldsetContentData from the container of fieldsets

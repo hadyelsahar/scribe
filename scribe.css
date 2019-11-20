@@ -5,7 +5,7 @@
  * | Please discuss changes on the talk page or on [[WT:Gadget]] before editing. |
  * |_____________________________________________________________________________|
  * 
- * Imported from version 0.0.1 as of 2019-11-04 from [[:en:MediaWiki:Gadget-scribe.css]]
+ * Imported from version 0.0.1 as of 2019-11-04 from [[:en:MediaWiki:Gadget-scribe.js]]
  * Using this script allows you to edit articles in underrepresented wikipedias, see [[User:Eugene233/scribe]]
  */
 
@@ -16,7 +16,7 @@
 	text-decoration: underline;
 }
 
-#mw-scribe-action-button-group{
+#mw-scribe-action-button-group {
     overflow: hidden;
     max-width: inherit;
     margin-bottom: -3px;
@@ -24,15 +24,19 @@
     width: 100%;
 }
 
+.mw-scribe-ref-btn {
+	margin-left: 175px;
+    margin-top: 50px;
+    z-index: 1;
+}
+
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
+.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
 	width: 145px;
 }
 
-#mw-scribe-add-reference-button{
-	  border: none;
-	  color: white;
-	  padding: 20px;
+.mw-scribe-add-reference-button{
+	  padding: 10px;
 	  text-align: center;
 	  text-decoration: none;
 	  display: inline-block;
@@ -42,4 +46,30 @@
 
 .oo-ui-textInputWidget .oo-ui-inputWidget-input {
 	border: 0px;
+}
+
+#slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 0.5px solid black;
+  width: 377px;
+  height: 120px;
+  background-color: grey;
+  margin-top: 15px;
+  z-index: -1;
+}
+
+#ref_box{
+	height: 70px;
+	background-color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 5px;
+	margin: 10px 10px 10px 10px
+}
+
+.mw-scribe-reference-section{
+	margin-top: -30px;
+    margin-left: 15px;
 }
