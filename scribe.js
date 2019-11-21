@@ -230,7 +230,7 @@
 
         html = '<div id=\'mw-scribe-slider\'>' +
                     '<div id=\'mw-scribe-ref-box\'>' +
-                        '<p id=\'mw-scribe-ref-text\'>Through time the core JavaScript functions and HTML output improves functionality</p>' +
+                        '<p id=\'mw-scribe-ref-text\'>Through time the core JavaScript functions and HTML output improves functionality </p>' +
                         '<div id=\'mw-scribe-ref-link-box\'>' +
                             '<a id=\'mw-scribe-ref-link\'> https://mediawiki.org/Special:Gadgets </a> <p id=\'mw-scribe-ref-domain\'>#SCIENCE</p>' +
                         '</div>' +
@@ -408,7 +408,7 @@
 
             // set the height of the dialog box
             ScribeDialog.prototype.getBodyHeight = function () {
-                return 700;
+                return $(window).height();
             };
             // create new windowManager
             windowManager = new OO.ui.WindowManager();
