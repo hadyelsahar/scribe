@@ -56,8 +56,8 @@
   width: 377px;
   height: 120px;
   background-color: grey;
-  margin-top: 15px;
-  z-index: -1;
+  margin-top: 25px;
+  z-index: 1;
 }
 
 /*.oo-ui-buttonElement-button{*/
@@ -68,24 +68,24 @@
 /*    margin-top: -125px;*/
 /*}*/
 
-#mw-scribe-ref-box {
-	height: 70px;
+.mw-scribe-ref-box {
+    height: 70px;
     background-color: white;
     padding-top: 15px;
     padding-bottom: 10px;
     border-radius: 5px;
-    margin: 10px 10px 10px 10px;
+    margin-left: 0px;
     width: 350px;
     padding-left: 5px;
-    margin-top: 12px;
+    margin-top: 5px;
 }
 
-#mw-scribe-ref-link-box{
+.mw-scribe-ref-link-box{
 	padding-top: 20px;
     display: flex;
 }
 
-#mw-scribe-ref-link{
+.mw-scribe-ref-link{
 	margin-top: 5px;
     margin-left: 5px;
     width: 200px;
@@ -96,7 +96,7 @@
     text-overflow: ellipsis;
 }
 
-#mw-scribe-ref-text {
+.mw-scribe-ref-text {
 	width: 350px;
     white-space: nowrap;
     overflow: hidden;
@@ -117,4 +117,76 @@
 .mw-scribe-reference-section {
 	margin-top: -30px;
     margin-left: 15px
+}
+
+/*S TYLING FOR THE SLIDER */
+
+.slideshow-container {
+  /*max-width: 1000px;*/
+  /*position: relative;*/
+  margin: auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  z-index: 1;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  font-size: 15px;
+  padding: 8px 12px;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
 }
