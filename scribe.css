@@ -48,17 +48,6 @@
 	border: 0px;
 }
 
-#mw-scribe-slider {
-  position: relative;
-  overflow: hidden;
-  border-radius: 5px;
-  border: 0.5px solid black;
-  width: 377px;
-  height: 120px;
-  background-color: grey;
-  margin-top: 25px;
-  z-index: 1;
-}
 
 /*.oo-ui-buttonElement-button{*/
 /*	border-radius: 40%;*/
@@ -121,7 +110,7 @@
 
 /*S TYLING FOR THE SLIDER */
 
-.slideshow-container {
+#slideshow-container {
   /*max-width: 1000px;*/
   /*position: relative;*/
   margin: auto;
