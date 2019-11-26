@@ -189,10 +189,12 @@
 
         if (n > slides.length) { slideIndex = 1 }
         if (n < 1) { slideIndex = slides.length }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+        if (slides.length > 0) {
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex - 1].style.display = "block";
         }
-        slides[slideIndex - 1].style.display = "block";
     }
 
     // Next/previous controls
@@ -227,12 +229,6 @@
     }
 
     function addSliderSectionChildNodes(section_number) {
-        var data = [
-            { 'content': 'Content_1_section ' + section_number, 'url': 'https://mediawiki.org/Special:Gadgets', 'domain': 'SCIENCE' },
-            { 'content': 'Content_2_done_section' + section_number, 'url': 'https://mediawiki.org', 'domain': 'HISTORY' },
-            { 'content': 'Content_3_done_section' + section_number, 'url': 'https://meta.wikimedia.org', 'domain': 'OTHERS' }
-        ];
-
         if ($("#slideshow-container-" + (section_number - 1).toString())) {
             var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides')
 
@@ -243,21 +239,25 @@
             }
         }
 
-        data.forEach(function (item) {
-            $("#slideshow-container-" + section_number.toString()).append(
-                '<div class="mySlides fade">' +
-                '<div class="text">' +
-                '<div class=\'mw-scribe-ref-box\'>' +
-                '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
-                '<div class=\'mw-scribe-ref-link-box\'>' +
-                '<a class=\'mw-scribe-ref-link\'> ' + item.url + '</a> <p id=\'mw-scribe-ref-domain\'>#' + item.domain + '</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '</div>');
-        });
-
-        setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
+        // $.get('https://tools.wmflabs.org/scribe/api/v1?article=' + mw.config.get( 'wgTitle' ).toLowerCase())
+        $.get('https://tools.wmflabs.org/scribe/api/v1?article=test')
+            .done(function (response) {
+                var resource = response.resources;
+                resource.forEach(function (item) {
+                    $("#slideshow-container-" + section_number.toString()).append(
+                        '<div class="mySlides fade">' +
+                        '<div class="text">' +
+                        '<div class=\'mw-scribe-ref-box\'>' +
+                        '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
+                        '<div class=\'mw-scribe-ref-link-box\'>' +
+                        '<a class=\'mw-scribe-ref-link\'> ' + item.url + '</a> <p id=\'mw-scribe-ref-domain\'>#' + item.domain + '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+                });
+                setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
+            });
     }
 
     /**
@@ -375,13 +375,12 @@
         });
     }
 
-    mw.hook('ve.activationComplete').add(function () {
-        var articleSectionsPromise, homePageFieldSetElements,
-            selectedSectionsToEdit = [];
-
-        articleSectionsPromise = getArticleListPromise(mw.config.get('wgTitle'));
+    function buildDialogView(articleSectionsPromise) {
         articleSectionsPromise.done(function (data) {
-            var articleSections = data.parse.sections;
+
+            console.log('data now is --->', data)
+            var articleSections = data.parse.sections,
+                selectedSectionsToEdit = [];
 
             OO.inheritClass(ScribeDialog, OO.ui.ProcessDialog);
             ScribeDialog.static.name = 'scribeDialog';
@@ -505,6 +504,31 @@
             dialog = new ScribeDialog();
             windowManager.addWindows([dialog]);
             windowManager.openWindow(dialog);
+        });
+    }
+
+    mw.hook('ve.activationComplete').add(function () {
+        var articleSectionsPromise, homePageFieldSetElements, page_sections;
+        articleSectionsPromise = getArticleListPromise(mw.config.get('wgTitle'));
+        new mw.Api().get({
+            action: "query",
+            titles: [mw.config.get('wgTitle')],
+        }).then(function (ret) {
+
+            $.each(ret.query.pages, function () {
+
+                if (this.missing !== "") {
+                    buildDialogView(articleSectionsPromise);
+
+                } else {
+                    buildDialogView(
+                        $.get('http://localhost:5000/api/v1/sections?article=' + mw.config.get('wgTitle')));
+                }
+            });
+        }, function (error) {
+            OO.ui.alert('Unable to Reach Server Right now').done(function () {
+                console.log('User closed the dialog.');
+            });
         });
     });
 }());
