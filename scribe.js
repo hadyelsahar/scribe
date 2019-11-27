@@ -1,3 +1,19 @@
+/* Translate the following to your language: */
+if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
+	mw.messages.set( {
+        've-scribe-dialog-title': 'Scribe',
+        've-scribe-select-section-txt':'Select the sections You wish to use in the article',
+        've-scribe-section-textbox-placeholder': 'Start writing something here',
+        've-scribe-btn-next': 'Next',
+        've-scribe-btn-cancel': 'Cancel',
+        've-scribe-btn-done': 'Done',
+        've-scribe-button-group-link-btn':'Link',
+        've-scribe-button-group-cite-btn': 'Cite',
+        've-scribe-no-section-selected-dialog-msg': 'Please select a section',
+        've-scribe-server-error': 'Unable to Reach Server Right now',
+	} );
+}
+
 /*  _____________________________________________________________________________
 * |                                                                             |
 * |                    === WARNING: GLOBAL GADGET FILE ===                      |
@@ -164,7 +180,7 @@
         });
 
         articleLegend = new OO.ui.LabelWidget({
-            label: '\n Select the sections You wish to use in the article',
+            label: '\n ' + mw.msg( 've-scribe-select-section-txt' ),
             padded: true,
         });
 
@@ -286,12 +302,12 @@
                 }),
                 new OO.ui.ButtonWidget({
                     icon: 'link',
-                    label: 'Link',
+                    label: mw.msg( 've-scribe-button-group-link-btn' ),
                     id: 'mw-scribe-edit-section-menu-btn-2'
                 }),
                 new OO.ui.ButtonWidget({
                     icon: 'quotes',
-                    label: 'Cite',
+                    label: mw.msg( 've-scribe-button-group-cite-btn' ),
                     id: 'mw-scribe-edit-section-menu-btn-3'
                 })
             ],
@@ -302,7 +318,7 @@
         editSurface = new OO.ui.MultilineTextInputWidget({
             rows: 17,
             autosize: true,
-            placeholder: 'Start writing something here, select references from below',
+            placeholder: mw.msg( 've-scribe-section-textbox-placeholder' ),
             autofocus: true
         });
 
@@ -384,14 +400,14 @@
 
             OO.inheritClass(ScribeDialog, OO.ui.ProcessDialog);
             ScribeDialog.static.name = 'scribeDialog';
-            ScribeDialog.static.title = 'Welcome To Scribe';
+            ScribeDialog.static.title = mw.msg( 've-scribe-dialog-title' );
             ScribeDialog.static.actions = [
                 {
-                    action: 'continue', modes: 'edit', label: 'Next', flags: ['primary',
+                    action: 'continue', modes: 'edit', label: mw.msg( 've-scribe-btn-next' ), flags: ['primary',
                         'constructive']
                 },
-                { modes: ['edit', 'final'], label: 'Cancel', flags: 'safe' },
-                { modes: 'final', action: 'save', label: 'Done', flags: 'primary' }
+                { modes: ['edit', 'final'], label: mw.msg( 've-scribe-btn-cancel' ), flags: 'safe' },
+                { modes: 'final', action: 'save', label: mw.msg( 've-scribe-btn-done' ), flags: 'primary' }
             ];
 
             ScribeDialog.prototype.initialize = function () {
@@ -469,7 +485,7 @@
                         showSlides(slideIndex); //We show the slides for the reference section
 
                     } else if (selectedSectionsToEdit.length === 0) {
-                        OO.ui.alert('Please select a section!').done(function () {
+                        OO.ui.alert( mw.msg( 've-scribe-no-section-selected-dialog-msg' ) ).done(function () {
                             console.log('User closed the dialog.');
                         });
                         viewControl--;
@@ -526,7 +542,7 @@
                 }
             });
         }, function (error) {
-            OO.ui.alert('Unable to Reach Server Right now').done(function () {
+            OO.ui.alert( mw.msg( 've-scribe-server-error' ) ).done(function () {
                 console.log('User closed the dialog.');
             });
         });
