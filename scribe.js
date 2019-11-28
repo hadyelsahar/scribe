@@ -244,7 +244,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         return html;
     }
 
-    function addSliderSectionChildNodes(section_number) {
+    function addSliderSectionChildNodes(section_number, active_section_title) {
         if ($("#slideshow-container-" + (section_number - 1).toString())) {
             var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides')
 
@@ -255,8 +255,8 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             }
         }
 
-        // $.get('https://tools.wmflabs.org/scribe/api/v1?article=' + mw.config.get( 'wgTitle' ).toLowerCase())
-        $.get('https://tools.wmflabs.org/scribe/api/v1?article=test')
+        // $.get('https://tools.wmflabs.org/scribe/api/v1?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
+        $.get('http://localhost:5000/api/v1?section=' + active_section_title )
             .done(function (response) {
                 var resource = response.resources;
                 resource.forEach(function (item) {
@@ -290,7 +290,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             label: section.line,
             align: 'left',
             padded: true,
-            id: 'mw-scribe-action-page-title'
+            id: 'mw-scribe-section-'+ section.number+ '-title'
         });
 
         editButtonGroup = new OO.ui.ButtonGroupWidget({
@@ -394,7 +394,6 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
     function buildDialogView(articleSectionsPromise) {
         articleSectionsPromise.done(function (data) {
 
-            console.log('data now is --->', data)
             var articleSections = data.parse.sections,
                 selectedSectionsToEdit = [];
 
@@ -411,7 +410,6 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             ];
 
             ScribeDialog.prototype.initialize = function () {
-
                 ScribeDialog.parent.prototype.initialize.apply(this, arguments);
 
                 // use the sections to create the elements in the home view
@@ -444,7 +442,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             };
 
             ScribeDialog.prototype.getActionProcess = function (action) {
-                var dialog, sectionNumber;
+                var dialog, sectionNumber, activeSectionTitle;
 
                 // Activate on click event for the reference section next/prev
                 activeOnClickEventForNext('.next');
@@ -480,13 +478,17 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                         // sectionNumber is the section number the user chose to edit
                         sectionNumber = selectedSectionsToEdit[viewControl];
                         this.stackLayout.setItem(stackPanels[sectionNumber]);
-
-                        addSliderSectionChildNodes(sectionNumber);
+                        
+                        // We get the active section title to be able to get suggestion links from server
+                        activeSectionTitle = $( '#mw-scribe-section-'+ sectionNumber + '-title').text();
+                        
+                        // We Add the slider section for edit view
+                        addSliderSectionChildNodes(sectionNumber, active_section_title);
                         showSlides(slideIndex); //We show the slides for the reference section
 
                     } else if (selectedSectionsToEdit.length === 0) {
                         OO.ui.alert( mw.msg( 've-scribe-no-section-selected-dialog-msg' ) ).done(function () {
-                            console.log('User closed the dialog.');
+
                         });
                         viewControl--;
                     }
@@ -543,7 +545,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             });
         }, function (error) {
             OO.ui.alert( mw.msg( 've-scribe-server-error' ) ).done(function () {
-                console.log('User closed the dialog.');
+
             });
         });
     });
