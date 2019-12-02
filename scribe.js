@@ -254,9 +254,10 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 }
             }
         }
+        console.log( 'building interface for ', active_section_title);
 
-        // $.get('https://tools.wmflabs.org/scribe/api/v1?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
-        $.get('http://localhost:5000/api/v1?section=' + active_section_title )
+        // $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
+        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title )
             .done(function (response) {
                 var resource = response.resources;
                 resource.forEach(function (item) {
@@ -483,7 +484,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                         activeSectionTitle = $( '#mw-scribe-section-'+ sectionNumber + '-title').text();
                         
                         // We Add the slider section for edit view
-                        addSliderSectionChildNodes(sectionNumber, active_section_title);
+                        addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
                         showSlides(slideIndex); //We show the slides for the reference section
 
                     } else if (selectedSectionsToEdit.length === 0) {
@@ -539,13 +540,13 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                     buildDialogView(articleSectionsPromise);
 
                 } else {
+                    console.log('page title', mw.config.get('wgTitle'))
                     buildDialogView(
-                        $.get('http://localhost:5000/api/v1/sections?article=' + mw.config.get('wgTitle')));
+                        $.get('https://tools.wmflabs.org/scribe/api/v1/sections?article=' + mw.config.get('wgTitle')));
                 }
             });
         }, function (error) {
             OO.ui.alert( mw.msg( 've-scribe-server-error' ) ).done(function () {
-
             });
         });
     });
