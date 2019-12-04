@@ -294,6 +294,8 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             id: 'mw-scribe-section-'+ section.number+ '-title'
         });
 
+        console.log('creating a sectionpanel ');
+        
         editButtonGroup = new OO.ui.ButtonGroupWidget({
             items: [
                 new OO.ui.ButtonWidget({
@@ -320,6 +322,8 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             rows: 17,
             autosize: true,
             placeholder: mw.msg( 've-scribe-section-textbox-placeholder' ),
+            id: '#mw-scribe-section-'+ section.number + '-text-editor',
+            classes: ['section-'+ section.number + 'text-editor'],
             autofocus: true
         });
 
@@ -482,7 +486,11 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                         
                         // We get the active section title to be able to get suggestion links from server
                         activeSectionTitle = $( '#mw-scribe-section-'+ sectionNumber + '-title').text();
-                        
+
+                        // Populate the edit box with the content of the sections from the article
+
+                        populateEditSectionTextBox( sectionNumber );
+
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
                         showSlides(slideIndex); //We show the slides for the reference section
@@ -491,7 +499,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                         OO.ui.alert( mw.msg( 've-scribe-no-section-selected-dialog-msg' ) ).done(function () {
 
                         });
-                        viewControl--;
+                        viewControl--;      
                     }
                     viewControl++;
                     selectedSectionsToEdit = [];
@@ -523,6 +531,26 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             dialog = new ScribeDialog();
             windowManager.addWindows([dialog]);
             windowManager.openWindow(dialog);
+        });
+    }
+
+    function populateEditSectionTextBox( sectionNumber ) {
+        api.get({
+            action: 'query',
+            titles: mw.config.get( 'wgTitle' ),
+            format: 'json',
+            formatversion: 2,
+            rvprop: 'content',
+            prop: 'revisions', 
+            rvsection: sectionNumber
+        }).then( function ( data ) {
+            var sectionContent = data.query.pages[0].revisions[0].content;
+            if (sectionContent !== 'undefined'){
+                //We get the text input element and add its section content for editing
+                $( '.section-'+ sectionNumber + 'text-editor' )[0].firstChild.value = sectionContent;
+            }else{
+                $( '.section-'+ sectionNumber + 'text-editor' )[0].firstChild.value = '';
+            } 
         });
     }
 
