@@ -208,8 +208,10 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         if (slides.length > 0) {
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
+                $( '.mw-scribe-ref-box' ).removeClass( 'activeref' );
             }
             slides[slideIndex - 1].style.display = "block";
+            $( '.mw-scribe-ref-box' ).addClass( 'activeref' );
         }
     }
 
@@ -254,7 +256,6 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 }
             }
         }
-        console.log( 'building interface for ', active_section_title);
 
         // $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
         $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title )
@@ -276,6 +277,50 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
             });
     }
+    /**
+     * Constructs link which VE should recognize
+     *
+     * @param {String} url the selected url in reference section
+     */
+    function createReferenceLink( url ) {
+        return '[' + url + ']';
+    }
+
+    /**
+     * Insert a cite link at the cursor position in the editor
+     *
+     * @param {TextInputWidget} textEditor the text editor
+     * @param {String} link the formatted url to insert
+     */
+    function insertLinkAtCursorPosition(textEditor, link) {
+        //IE support
+        if (document.selection) {
+            textEditor.focus();
+            sel = document.selection.createRange();
+            sel.text = link;
+        }
+        //MOZILLA and others
+        else if (textEditor.selectionStart || textEditor.selectionStart == '0') {
+            var startPos = textEditor.selectionStart;
+            var endPos = textEditor.selectionEnd;
+            textEditor.value = textEditor.value.substring(0, startPos) + link + textEditor.value.substring(endPos, textEditor.value.length);
+        } else {
+            textEditor.value += link;
+        }
+    }
+
+    /**
+     *
+     * @param {ButtonWidget} referenceAddButton the button to be activated
+     * @param {String} sectionNumber the section number currently under edit
+     */
+    function addReferenceButtonClickAction ( referenceAddButton, sectionNumber ) {
+        referenceAddButton.on( 'click', function () {
+            var selectedUrl = $( '.activeref' )[0].lastChild.firstChild.innerHTML;
+            var editor = $( '.section-'+ sectionNumber + 'text-editor' )[0].firstChild;
+            insertLinkAtCursorPosition( editor, createReferenceLink( selectedUrl ) );
+        } );
+    }
 
     /**
     * Creates PanelLayout of a section's edit interface.
@@ -293,8 +338,6 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             padded: true,
             id: 'mw-scribe-section-'+ section.number+ '-title'
         });
-
-        console.log('creating a sectionpanel ');
         
         editButtonGroup = new OO.ui.ButtonGroupWidget({
             items: [
@@ -337,7 +380,11 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 'progressive'
             ],
             classes: ['mw-scribe-ref-btn']
+            //'section-'+ section.number + '-ref-button'
         });
+
+        // we define the action when the ref button is clicked
+        addReferenceButtonClickAction( referenceAddButton, section.number );
 
         referenceSection = new OO.ui.LabelWidget({
             label: $(html),
