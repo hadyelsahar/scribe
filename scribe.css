@@ -10,18 +10,21 @@
  */
 
  #mw-scribe-action-page-title{
-	font-size: 24px;
-	margin-bottom: 20px;
+	font-size: 34px;
+	margin-bottom: 17px;
 	margin-right: 60px;
 	text-decoration: underline;
+	opacity: 0.5;
 }
 
 #mw-scribe-action-button-group{
-    overflow: hidden;
+	overflow: hidden;
     max-width: inherit;
     margin-bottom: -3px;
     flex-wrap: wrap;
     width: 100%;
+    opacity: 0.7;
+    border-bottom: none;
 }
 
 .mw-scribe-ref-btn {
@@ -45,7 +48,6 @@
 }
 
 .oo-ui-textInputWidget .oo-ui-inputWidget-input {
-	border: 0px;
 }
 
 
@@ -147,6 +149,25 @@
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
   background-color: rgba(0,0,0,0.8);
+}
+
+.mw-scribe-select-info{
+	margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: larger;
+    text-align: left;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.mw-scribe-section-name-text{
+	font-size: 20px;
+    margin-bottom: 25px;
+    opacity: 0.6;
+}
+
+.mw-scribe-text-editor{
+	opacity: 0.5;
 }
 
 /* Caption text */

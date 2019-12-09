@@ -50,7 +50,8 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         homeItem = new OO.ui.CheckboxInputWidget({
             value: section.number,
             id: 'input-' + section.number,
-            required: true
+            required: true,
+            classes: [ 'mw-scribe-checkbox' ]
         });
         itemFieldLayout = new OO.ui.FieldLayout(
             homeItem,
@@ -180,8 +181,9 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         });
 
         articleLegend = new OO.ui.LabelWidget({
-            label: '\n ' + mw.msg( 've-scribe-select-section-txt' ),
+            label: mw.msg( 've-scribe-select-section-txt' ),
             padded: true,
+            classes: [ 'mw-scribe-select-info' ]
         });
 
         homeElements.push(articleNameLabel);
@@ -336,7 +338,8 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             label: section.line,
             align: 'left',
             padded: true,
-            id: 'mw-scribe-section-'+ section.number+ '-title'
+            id: 'mw-scribe-section-'+ section.number+ '-title',
+            classes: [ 'mw-scribe-section-name-text' ]
         });
         
         editButtonGroup = new OO.ui.ButtonGroupWidget({
@@ -366,7 +369,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             autosize: true,
             placeholder: mw.msg( 've-scribe-section-textbox-placeholder' ),
             id: '#mw-scribe-section-'+ section.number + '-text-editor',
-            classes: ['section-'+ section.number + 'text-editor'],
+            classes: ['section-'+ section.number + 'text-editor', 'mw-scribe-text-editor'],
             autofocus: true
         });
 
@@ -574,7 +577,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             $(document.body).append(windowManager.$element);
             // set the width of the dialog
             ProcessDialog = new ScribeDialog({});
-            ProcessDialog.size = 'medium';
+            ProcessDialog.size = 'large';
             dialog = new ScribeDialog();
             windowManager.addWindows([dialog]);
             windowManager.openWindow(dialog);
@@ -620,6 +623,9 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                         $.get('https://tools.wmflabs.org/scribe/api/v1/sections?article=' + mw.config.get('wgTitle')));
                 }
             });
+            // We set the width of our frame to the width of the device
+            $('.oo-ui-window-frame').css('width',$(document).width());
+            $('.oo-ui-window-frame').css('height',$(document).height());
         }, function (error) {
             OO.ui.alert( mw.msg( 've-scribe-server-error' ) ).done(function () {
             });
