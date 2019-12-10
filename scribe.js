@@ -1,17 +1,17 @@
 /* Translate the following to your language: */
-if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
-	mw.messages.set( {
+if (!mw.messages.exists('ve-scribe-dialog-title')) {
+    mw.messages.set({
         've-scribe-dialog-title': 'Scribe',
-        've-scribe-select-section-txt':'Select the sections You wish to use in the article',
+        've-scribe-select-section-txt': 'Select the sections You wish to use in the article',
         've-scribe-section-textbox-placeholder': 'Start writing something here',
         've-scribe-btn-next': 'Next',
         've-scribe-btn-cancel': 'Cancel',
         've-scribe-btn-done': 'Done',
-        've-scribe-button-group-link-btn':'Link',
+        've-scribe-button-group-link-btn': 'Link',
         've-scribe-button-group-cite-btn': 'Cite',
         've-scribe-no-section-selected-dialog-msg': 'Please select a section',
         've-scribe-server-error': 'Unable to Reach Server Right now',
-	} );
+    });
 }
 
 /*  _____________________________________________________________________________
@@ -51,7 +51,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             value: section.number,
             id: 'input-' + section.number,
             required: true,
-            classes: [ 'mw-scribe-checkbox' ]
+            classes: ['mw-scribe-checkbox']
         });
         itemFieldLayout = new OO.ui.FieldLayout(
             homeItem,
@@ -181,9 +181,9 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         });
 
         articleLegend = new OO.ui.LabelWidget({
-            label: mw.msg( 've-scribe-select-section-txt' ),
+            label: mw.msg('ve-scribe-select-section-txt'),
             padded: true,
-            classes: [ 'mw-scribe-select-info' ]
+            classes: ['mw-scribe-select-info']
         });
 
         homeElements.push(articleNameLabel);
@@ -210,10 +210,10 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         if (slides.length > 0) {
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
-                $( '.mw-scribe-ref-box' ).removeClass( 'activeref' );
+                $('.mw-scribe-ref-box').removeClass('activeref');
             }
             slides[slideIndex - 1].style.display = "block";
-            $( '.mw-scribe-ref-box' ).addClass( 'activeref' );
+            $('.mw-scribe-ref-box').addClass('activeref');
         }
     }
 
@@ -260,7 +260,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         }
 
         // $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
-        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title )
+        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title)
             .done(function (response) {
                 var resource = response.resources;
                 resource.forEach(function (item) {
@@ -284,7 +284,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
      *
      * @param {String} url the selected url in reference section
      */
-    function createReferenceLink( url ) {
+    function createReferenceLink(url) {
         return '[' + url + ']';
     }
 
@@ -316,12 +316,12 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
      * @param {ButtonWidget} referenceAddButton the button to be activated
      * @param {String} sectionNumber the section number currently under edit
      */
-    function addReferenceButtonClickAction ( referenceAddButton, sectionNumber ) {
-        referenceAddButton.on( 'click', function () {
-            var selectedUrl = $( '.activeref' )[0].lastChild.firstChild.innerHTML;
-            var editor = $( '.section-'+ sectionNumber + 'text-editor' )[0].firstChild;
-            insertLinkAtCursorPosition( editor, createReferenceLink( selectedUrl ) );
-        } );
+    function addReferenceButtonClickAction(referenceAddButton, sectionNumber) {
+        referenceAddButton.on('click', function () {
+            var selectedUrl = $('.activeref')[0].lastChild.firstChild.innerHTML;
+            var editor = $('.section-' + sectionNumber + 'text-editor')[0].firstChild;
+            insertLinkAtCursorPosition(editor, createReferenceLink(selectedUrl));
+        });
     }
 
     /**
@@ -338,10 +338,10 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             label: section.line,
             align: 'left',
             padded: true,
-            id: 'mw-scribe-section-'+ section.number+ '-title',
-            classes: [ 'mw-scribe-section-name-text' ]
+            id: 'mw-scribe-section-' + section.number + '-title',
+            classes: ['mw-scribe-section-name-text']
         });
-        
+
         editButtonGroup = new OO.ui.ButtonGroupWidget({
             items: [
                 new OO.ui.ButtonWidget({
@@ -351,12 +351,12 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 }),
                 new OO.ui.ButtonWidget({
                     icon: 'link',
-                    label: mw.msg( 've-scribe-button-group-link-btn' ),
+                    label: mw.msg('ve-scribe-button-group-link-btn'),
                     id: 'mw-scribe-edit-section-menu-btn-2'
                 }),
                 new OO.ui.ButtonWidget({
                     icon: 'quotes',
-                    label: mw.msg( 've-scribe-button-group-cite-btn' ),
+                    label: mw.msg('ve-scribe-button-group-cite-btn'),
                     id: 'mw-scribe-edit-section-menu-btn-3'
                 })
             ],
@@ -367,9 +367,9 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         editSurface = new OO.ui.MultilineTextInputWidget({
             rows: 17,
             autosize: true,
-            placeholder: mw.msg( 've-scribe-section-textbox-placeholder' ),
-            id: '#mw-scribe-section-'+ section.number + '-text-editor',
-            classes: ['section-'+ section.number + 'text-editor', 'mw-scribe-text-editor'],
+            placeholder: mw.msg('ve-scribe-section-textbox-placeholder'),
+            id: '#mw-scribe-section-' + section.number + '-text-editor',
+            classes: ['section-' + section.number + 'text-editor', 'mw-scribe-text-editor'],
             autofocus: true
         });
 
@@ -387,7 +387,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
         });
 
         // we define the action when the ref button is clicked
-        addReferenceButtonClickAction( referenceAddButton, section.number );
+        addReferenceButtonClickAction(referenceAddButton, section.number);
 
         referenceSection = new OO.ui.LabelWidget({
             label: $(html),
@@ -454,14 +454,14 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
 
             OO.inheritClass(ScribeDialog, OO.ui.ProcessDialog);
             ScribeDialog.static.name = 'scribeDialog';
-            ScribeDialog.static.title = mw.msg( 've-scribe-dialog-title' );
+            ScribeDialog.static.title = mw.msg('ve-scribe-dialog-title');
             ScribeDialog.static.actions = [
                 {
-                    action: 'continue', modes: 'edit', label: mw.msg( 've-scribe-btn-next' ), flags: ['primary',
+                    action: 'continue', modes: 'edit', label: mw.msg('ve-scribe-btn-next'), flags: ['primary',
                         'constructive']
                 },
-                { modes: ['edit', 'final'], label: mw.msg( 've-scribe-btn-cancel' ), flags: 'safe' },
-                { modes: 'final', action: 'save', label: mw.msg( 've-scribe-btn-done' ), flags: 'primary' }
+                { modes: ['edit', 'final'], label: mw.msg('ve-scribe-btn-cancel'), flags: 'safe' },
+                { modes: 'final', action: 'save', label: mw.msg('ve-scribe-btn-done'), flags: 'primary' }
             ];
 
             ScribeDialog.prototype.initialize = function () {
@@ -533,23 +533,23 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                         // sectionNumber is the section number the user chose to edit
                         sectionNumber = selectedSectionsToEdit[viewControl];
                         this.stackLayout.setItem(stackPanels[sectionNumber]);
-                        
+
                         // We get the active section title to be able to get suggestion links from server
-                        activeSectionTitle = $( '#mw-scribe-section-'+ sectionNumber + '-title').text();
+                        activeSectionTitle = $('#mw-scribe-section-' + sectionNumber + '-title').text();
 
                         // Populate the edit box with the content of the sections from the article
 
-                        populateEditSectionTextBox( sectionNumber );
+                        populateEditSectionTextBox(sectionNumber);
 
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
                         showSlides(slideIndex); //We show the slides for the reference section
 
                     } else if (selectedSectionsToEdit.length === 0) {
-                        OO.ui.alert( mw.msg( 've-scribe-no-section-selected-dialog-msg' ) ).done(function () {
+                        OO.ui.alert(mw.msg('ve-scribe-no-section-selected-dialog-msg')).done(function () {
 
                         });
-                        viewControl--;      
+                        viewControl--;
                     }
                     viewControl++;
                     selectedSectionsToEdit = [];
@@ -562,7 +562,7 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 } else {
                     //closing the dialog
                     // dialog.close();
-                    // window.location.reload();
+                    window.location.reload();
                 }
                 return ScribeDialog.parent.prototype.getActionProcess
                     .call(this, action);
@@ -572,35 +572,53 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
             ScribeDialog.prototype.getBodyHeight = function () {
                 return $(window).height();
             };
-            // create new windowManager
-            windowManager = new OO.ui.WindowManager();
-            $(document.body).append(windowManager.$element);
-            // set the width of the dialog
-            ProcessDialog = new ScribeDialog({});
-            ProcessDialog.size = 'large';
-            dialog = new ScribeDialog();
-            windowManager.addWindows([dialog]);
-            windowManager.openWindow(dialog);
+
+            function ScribeTool(toolGroup, config) {
+                OO.ui.Tool.call(this, toolGroup, config);
+
+            }
+            OO.inheritClass(ScribeTool, OO.ui.Tool);
+
+            ScribeTool.static.name = 'ScribeTool';
+            ScribeTool.static.title = 'Scribe';
+            ScribeTool.static.icon = 'window';
+
+            ScribeTool.prototype.onSelect = function () {
+                // create new windowManager
+                windowManager = new OO.ui.WindowManager();
+                $(document.body).append(windowManager.$element);
+                // set the width of the dialog
+                ProcessDialog = new ScribeDialog({});
+                ProcessDialog.size = 'large';
+                dialog = new ScribeDialog();
+                windowManager.addWindows([dialog]);
+                windowManager.openWindow(dialog);
+            };
+
+            ScribeTool.prototype.onUpdateState = function () {
+                this.setActive(false);
+            };
+            ve.ui.toolFactory.register(ScribeTool);
         });
     }
 
-    function populateEditSectionTextBox( sectionNumber ) {
+    function populateEditSectionTextBox(sectionNumber) {
         api.get({
             action: 'query',
-            titles: mw.config.get( 'wgTitle' ),
+            titles: mw.config.get('wgTitle'),
             format: 'json',
             formatversion: 2,
             rvprop: 'content',
-            prop: 'revisions', 
+            prop: 'revisions',
             rvsection: sectionNumber
-        }).then( function ( data ) {
+        }).then(function (data) {
             var sectionContent = data.query.pages[0].revisions[0].content;
-            if (sectionContent !== 'undefined'){
+            if (sectionContent !== 'undefined') {
                 //We get the text input element and add its section content for editing
-                $( '.section-'+ sectionNumber + 'text-editor' )[0].firstChild.value = sectionContent;
-            }else{
-                $( '.section-'+ sectionNumber + 'text-editor' )[0].firstChild.value = '';
-            } 
+                $('.section-' + sectionNumber + 'text-editor')[0].firstChild.value = sectionContent;
+            } else {
+                $('.section-' + sectionNumber + 'text-editor')[0].firstChild.value = '';
+            }
         });
     }
 
@@ -624,10 +642,10 @@ if ( !mw.messages.exists( 've-scribe-dialog-title' ) ) {
                 }
             });
             // We set the width of our frame to the width of the device
-            $('.oo-ui-window-frame').css('width',$(document).width());
-            $('.oo-ui-window-frame').css('height',$(document).height());
+            $('.oo-ui-window-frame').css('width', $(document).width());
+            $('.oo-ui-window-frame').css('height', $(document).height());
         }, function (error) {
-            OO.ui.alert( mw.msg( 've-scribe-server-error' ) ).done(function () {
+            OO.ui.alert(mw.msg('ve-scribe-server-error')).done(function () {
             });
         });
     });
