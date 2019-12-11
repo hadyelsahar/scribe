@@ -75,54 +75,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-        * Get data from a fieldset by their label and value.
-        *
-        * @param {Object} fieldset - the fielset where the data is obtained.
-        * @return {Object} - The fieldset data.
-        */
-
-    function getFieldSetData(fieldset) {
-        var fieldData = [];
-        fieldset.forEach(function (field) {
-            if (field.label) {
-                fieldData.push(field.label);
-            } else {
-                fieldData.push(field.value);
-            }
-        });
-        return fieldData;
-    }
-
-    /**
-        * Gets the data from an object holding fieldsets.
-        *
-        * @param {Object} fieldsetContainer - The container of fieldsets.
-        * @return {Object} - The content of the fieldset.
-        */
-
-    function getFieldSetContendData(fieldsetContainer) {
-        var ContentData = [];
-        fieldsetContainer.forEach(function (fieldset) {
-            var fieldsetData = getFieldSetData(fieldset);
-            ContentData.push(fieldsetData);
-        });
-        return ContentData;
-    }
-    /**
-    * Create a LabelWidget.
-    *
-    * @param {Object} dict - The dictionary of configurations.
-    * @return {Object} - The LabelText.
-    */
-
-    function makeLabelText(label) {
-        return new OO.ui.LabelWidget({
-            label: label,
-            classes: ['formWizard-label']
-        });
-    }
-
-    /**
         * Create a FieldsetLayout.
         *
         * @param {Object} contentElements - The elements added to the fielset.
@@ -140,13 +92,25 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-        * Adds fioelset elements to  PanelLayout.
-        *
-        * @param {Object} fieldSetContentElements - The elements of the fieldset.
-        * @return {Object} - The panel containing elements.
-        */
+     * 
+     * @param {String} sectionNumber the section number
+     * @param {String} sectionName the name of the section 
+     */
+    function getFieldsetSectionDataStructure(sectionNumber, sectionName ){
+        var data = {};
+        data.section = sectionName;
+        data.number = sectionNumber;
+        return data;
+    }
 
-    function addPanelElementsToPanel(fieldSetContentElements) {
+    /**
+     * Adds fioelset elements to  PanelLayout
+     * 
+     * @param {String} sectionNumber the number of the section
+     * @param {String} sectionName the name of the section
+     * @param {Object} fieldSetContentElements the fieldset content with elements
+     */
+    function addPanelElementsToPanel(sectionNumber, sectionName, fieldSetContentElements) {
         var fieldSet,
             panel;
         fieldSet = createFieldSet(fieldSetContentElements);
@@ -157,6 +121,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             scrollable: true,
             classes: ['container']
         });
+        if ( sectionName != 'undefined' && sectionNumber != -1 ){
+            fieldsetContainer.push(getFieldsetSectionDataStructure(sectionNumber, sectionName));
+        }
+
         panel.$element.append(fieldSet.$element);
         return panel;
     }
@@ -194,7 +162,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             homeElements.push(sectionLine);
         });
         homeFieldSet = createFieldSet(homeElements);
-        homePanel = addPanelElementsToPanel(homeFieldSet);
+        homePanel = addPanelElementsToPanel(-1, 'undefined', homeFieldSet);
 
         homeviewElements.push(homePanel);
         homeviewElements.push(homeFieldSet);
@@ -400,7 +368,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         sectionFieldSetItems.push(referenceAddButton);
         sectionFieldSetItems.push(referenceSection);
 
-        editSectionPanel = addPanelElementsToPanel(sectionFieldSetItems);
+        editSectionPanel = addPanelElementsToPanel(section.number, section.line, sectionFieldSetItems);
         return editSectionPanel;
     }
 
@@ -505,10 +473,23 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                 // The Done button has been clicked
                 if (action === 'save') {
+
                     // we get the fieldsetContentData from the container of fieldsets
-
+                    var editData = [];
+                    // the data in the fieldset container is extracted into the data object
+                    // we will use write to VE interface
+                    fieldsetContainer.forEach( function ( container ) {
+                        var editDataObject = {};
+                        var text = $('.section-' + container.number + 'text-editor')[0].firstChild.value.toString();
+                        if( text  != '' ){
+                            editDataObject.section = container.section;
+                            editDataObject.content = text;
+                            editData.push( editDataObject );
+                        }
+                    });
+                    console.log(' Edit Data now is!',editData);
                     // We make the necessary operations requests here
-
+                    // console.log(' The fieldset container ehh!',getFieldSetContendData(fieldsetContainer));
                     // Here we close the dialog after processing
                     dialog = this;
                     return new OO.ui.Process(function () {
