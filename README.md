@@ -12,9 +12,6 @@ In order to setup( test ) this tool, follow the steps below:
 
 ```
 * scribe[ResourceLoader|dependencies=ext.visualEditor.core|mediawiki|mediawiki.api] | scribe.js|scribe.css
-* scribe
-core[ResourceLoader|dependencies=ext.visualEditor.core|mediawiki|mediawiki.api]|scribe.js|scribe.css
-
 ```
 
 You can now test the tool when using Visual Editor to edit a Wiki page.
