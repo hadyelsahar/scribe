@@ -467,6 +467,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             ScribeDialog.prototype.getActionProcess = function (action) {
                 var dialog, sectionNumber, activeSectionTitle;
 
+                // removing the class which enalbes a reference to be selected by defualt
+                $('.mw-scribe-ref-box').removeClass('activeref');
+
                 // Activate on click event for the reference section next/prev
                 activeOnClickEventForNext('.next');
                 activeOnClickEventForPrev('.prev');
