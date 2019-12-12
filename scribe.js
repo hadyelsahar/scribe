@@ -11,6 +11,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         've-scribe-button-group-cite-btn': 'Cite',
         've-scribe-no-section-selected-dialog-msg': 'Please select a section',
         've-scribe-server-error': 'Unable to Reach Server Right now',
+        've-scribe-save-prompt-msg': 'Save for later?'
     });
 }
 
@@ -96,7 +97,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {String} sectionNumber the section number
      * @param {String} sectionName the name of the section 
      */
-    function getFieldsetSectionDataStructure(sectionNumber, sectionName ){
+    function getFieldsetSectionDataStructure(sectionNumber, sectionName) {
         var data = {};
         data.section = sectionName;
         data.number = sectionNumber;
@@ -121,7 +122,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             scrollable: true,
             classes: ['container']
         });
-        if ( sectionName != 'undefined' && sectionNumber != -1 ){
+        if (sectionName != 'undefined' && sectionNumber != -1) {
             fieldsetContainer.push(getFieldsetSectionDataStructure(sectionNumber, sectionName));
         }
 
@@ -481,18 +482,26 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                     var editData = [];
                     // the data in the fieldset container is extracted into the data object
                     // we will use write to VE interface
-                    fieldsetContainer.forEach( function ( container ) {
+                    fieldsetContainer.forEach(function (container) {
                         var editDataObject = {};
                         var text = $('.section-' + container.number + 'text-editor')[0].firstChild.value.toString();
-                        if( text  != '' ){
+                        if (text != '') {
                             editDataObject.section = container.section;
                             editDataObject.content = text;
-                            editData.push( editDataObject );
+                            editData.push(editDataObject);
                         }
                     });
-                    console.log(' Edit Data now is!',editData);
-                    // We make the necessary operations requests here
-                    // console.log(' The fieldset container ehh!',getFieldSetContendData(fieldsetContainer));
+                    //' Edit Data is found in 'editData' variable
+
+                    // get the choice of the user's action (sandbox or publish)
+                    OO.ui.confirm(mw.msg('ve-scribe-save-prompt-msg')).done(function (confirmed) {
+                        if (confirmed) {
+                            //Saving Info to sandBox
+                        } else {
+                            //Writing info to VE
+                        }
+                    });
+
                     // Here we close the dialog after processing
                     dialog = this;
                     return new OO.ui.Process(function () {
