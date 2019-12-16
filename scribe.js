@@ -424,10 +424,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             veData = [];
         editData.forEach(function (sectionData) {
             veData.push(sectionHead);
-            veData.push(sectionData.section);
+            veData.push( ...sectionData.section.split('') );
             veData.push(sectionHeadClose);
             veData.push(contentOpen);
-            veData.push(sectionData.content);
+            veData.push( ...sectionData.content.split('') );
             veData.push(contentClose);
         });
         return veData;
@@ -523,7 +523,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                             //Saving Info to sandBox
                         } else {
                             //Writing info to VE
-                            surfaceModel.getFragment().collapseToEnd().insertContent( buildVeEditData( editData ) ).collapseToEnd().select();
+                            surfaceModel.getFragment().collapseToStart().insertContent(buildVeEditData(editData)).collapseToEnd().select();
                         }
                     });
                     // Here we close the dialog after processing
