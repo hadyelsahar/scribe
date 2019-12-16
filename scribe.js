@@ -37,7 +37,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         fieldsetContentData = [],
         viewControl = 0,
         slideIndex = 1,
-        stack;
+        stack,
+        surfaceModel = ve.init.target.getSurface().getModel();
 
     /**
      * Create a checkbox to represent section to select.
@@ -415,6 +416,23 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         });
     }
 
+    function buildVeEditData(editData) {
+        var sectionHead = { type: 'mwHeading', attributes: { level: 2 } },
+            sectionHeadClose = { type: '/mwHeading' },
+            contentOpen = { type: 'paragraph' },
+            contentClose = { type: '/paragraph' },
+            veData = [];
+        editData.forEach(function (sectionData) {
+            veData.push(sectionHead);
+            veData.push( ...sectionData.section.split('') );
+            veData.push(sectionHeadClose);
+            veData.push(contentOpen);
+            veData.push( ...sectionData.content.split('') );
+            veData.push(contentClose);
+        });
+        return veData;
+    }
+
     function buildDialogView(articleSectionsPromise) {
         articleSectionsPromise.done(function (data) {
 
@@ -477,7 +495,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                 // The Done button has been clicked
                 if (action === 'save') {
-
                     // we get the fieldsetContentData from the container of fieldsets
                     var editData = [];
                     // the data in the fieldset container is extracted into the data object
@@ -491,17 +508,24 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                             editData.push(editDataObject);
                         }
                     });
-                    //' Edit Data is found in 'editData' variable
 
+                    //' Edit Data is found in 'editData' variable
                     // get the choice of the user's action (sandbox or publish)
-                    OO.ui.confirm(mw.msg('ve-scribe-save-prompt-msg')).done(function (confirmed) {
-                        if (confirmed) {
+                    OO.ui.confirm(mw.msg('ve-scribe-save-prompt-msg'),
+                        {
+                            actions: [
+                                { action: 'accept', label: 'Yes', flags: ['primary', 'progressive'] },
+                                { action: 'reject', label: 'No', flags: ['primary', 'destructive'] }
+                            ]
+                        }
+                    ).done(function (confirmed) {
+                        if (action === 'accept') {
                             //Saving Info to sandBox
                         } else {
                             //Writing info to VE
+                            surfaceModel.getFragment().collapseToStart().insertContent(buildVeEditData(editData)).collapseToEnd().select();
                         }
                     });
-
                     // Here we close the dialog after processing
                     dialog = this;
                     return new OO.ui.Process(function () {
