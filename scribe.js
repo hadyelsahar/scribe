@@ -11,7 +11,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         've-scribe-button-group-cite-btn': 'Cite',
         've-scribe-no-section-selected-dialog-msg': 'Please select a section',
         've-scribe-server-error': 'Unable to Reach Server Right now',
-        've-scribe-save-prompt-msg': 'Save for later?'
+        've-scribe-save-prompt-msg': 'Save for later?',
+        've-scribe-edit-summary': 'This page was edited using scribe',
+        've-scribe-dialog-action-complete': 'Page created with success \n check your sandbox'
     });
 }
 
@@ -37,8 +39,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         fieldsetContentData = [],
         viewControl = 0,
         slideIndex = 1,
-        stack,
-        surfaceModel = ve.init.target.getSurface().getModel();
+        stack;
+        // surfaceModel = ve.init.target.getSurface().getModel();
 
     /**
      * Create a checkbox to represent section to select.
@@ -378,7 +380,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     * Create an instance of a dialog.
     *
     * @param {Object} config - dialog configuration.
-    * Note: Changing this name FormWizardDialog means changing the dialog
+    * Note: Changing this name ScribeDialog means changing the dialog
     * name name below.
     */
 
@@ -424,13 +426,58 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             veData = [];
         editData.forEach(function (sectionData) {
             veData.push(sectionHead);
-            veData.push( ...sectionData.section.split('') );
+            // Spread section into '', '', ''
+            sectionData.section.split( '' ).forEach( function name( elt ) {
+                veData.push( elt );
+            } );
             veData.push(sectionHeadClose);
             veData.push(contentOpen);
-            veData.push( ...sectionData.content.split('') );
+            // spread content into '', '', ''
+            sectionData.content.split( '' ).forEach( function name( elt ) {
+                veData.push( elt );
+            } );
             veData.push(contentClose);
         });
         return veData;
+    }
+
+    /**
+     * construct the content to be saved in the User's Sandbox
+     *
+     * @param {Object} editData The edit data from the interface elements
+     */
+    function constructSanboxPageContent(editData) {
+        var sandboxPageContent;
+        sandboxPageContent = '';
+        editData.forEach(function (contentData) {
+            sandboxPageContent += '\n== ' + contentData.section + ' == \n' + contentData.content + '\n';
+        });
+        return sandboxPageContent;
+    }
+
+    /**
+     *
+     * @param {Object} sandboxData The data to be edited
+     * @param {String} username The name of the currently logged in user
+     */
+    function CreateSanboxSubpage(sandboxData, username) {
+        var date, pageTitle;
+        pageTitle = 'User:' + username + '/sandbox/' + mw.config.get('wgTitle');
+        date = new Date();
+        api.postWithToken('csrf', {
+            action: 'edit',
+            summary: mw.msg('ve-scribe-edit-summary'),
+            title: pageTitle,
+            appendtext: sandboxData,
+            basetimestamp: date.toISOString()
+        }).done(function () {
+            mw.loader.using('mediawiki.notify', function () {
+                mw.notify(mw.msg('ve-scribe-dialog-action-complete'),
+                    { type: 'info' },
+                    { title: mw.config.get('ve-scribe-dialog-title') }
+                );
+            });
+        });
     }
 
     function buildDialogView(articleSectionsPromise) {
@@ -519,10 +566,22 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                             ]
                         }
                     ).done(function (confirmed) {
-                        if (action === 'accept') {
+                        if (confirmed) {
                             //Saving Info to sandBox
+                            api.get({
+                                action: 'query',
+                                meta: 'userinfo'
+                            }).then(function (data) {
+                                if (data.query.userinfo.id !== 0) { //User is logged in
+                                    CreateSanboxSubpage(constructSanboxPageContent(editData), data.query.userinfo.name);
+                                } else {
+                                    console.log('User is not logged in but with ip', data.query.userinfo.name);
+                                }
+                            });
+
                         } else {
                             //Writing info to VE
+                            var surfaceModel = ve.init.target.getSurface().getModel();
                             surfaceModel.getFragment().collapseToStart().insertContent(buildVeEditData(editData)).collapseToEnd().select();
                         }
                     });
