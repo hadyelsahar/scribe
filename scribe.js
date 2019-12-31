@@ -39,8 +39,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         fieldsetContentData = [],
         viewControl = 0,
         slideIndex = 1,
-        stack;
-        // surfaceModel = ve.init.target.getSurface().getModel();
+        stack,
+        selectedRefIndex = 0,
+        chosenReferences = [];
+    // surfaceModel = ve.init.target.getSurface().getModel();
 
     /**
      * Create a checkbox to represent section to select.
@@ -256,8 +258,16 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      *
      * @param {String} url the selected url in reference section
      */
-    function createReferenceLink(url) {
-        return '[' + url + ']';
+    function createReferenceLink(selectedRefIndex) {
+
+        // var ref = '<ref name=sky17082019-1000>'+
+        //     '{{Eugene233' +
+        //     '|Path= ' + url +
+        //     '|Title= Sample title'+
+        //     '|Publisher = [[Eugene233]]'+
+        //     '| Archive date = 4 sibtambar 2019 }}</ref>';
+        return ' [' + selectedRefIndex + ']';
+        // return url;
     }
 
     /**
@@ -292,7 +302,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         referenceAddButton.on('click', function () {
             var selectedUrl = $('.activeref')[0].lastChild.firstChild.innerHTML;
             var editor = $('.section-' + sectionNumber + 'text-editor')[0].firstChild;
-            insertLinkAtCursorPosition(editor, createReferenceLink(selectedUrl));
+            // We add the chosen reference URL to the list of chosen references
+            chosenReferences.push(selectedUrl);
+            insertLinkAtCursorPosition(editor, createReferenceLink(selectedRefIndex + 1));
+            selectedRefIndex++;
         });
     }
 
@@ -418,27 +431,119 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         });
     }
 
-    function buildVeEditData(editData) {
-        var sectionHead = { type: 'mwHeading', attributes: { level: 2 } },
-            sectionHeadClose = { type: '/mwHeading' },
-            contentOpen = { type: 'paragraph' },
-            contentClose = { type: '/paragraph' },
-            veData = [];
+    /**
+     * Remove space from content url
+     *
+     * @param {String} entryUrl url to process
+     */
+    function removeSpaceFromLink(entryUrl) {
+        // remove white space from begining of the url
+        entryUrl = entryUrl.replace(' ', '');
+        return entryUrl;
+    }
+
+    /**
+     * Replace text citation from text editor with actual links
+     *
+     * @param {Object} chosenReferences array of selected refs
+     * @param {String} content the content with citations
+     */
+    function replaceCiteTextWithLink(chosenReferences, content) {
+        // check for citations in content before replacing
+        if (content.includes('[') && content.includes(']')) {
+            for (var index = 0; index < chosenReferences.length; index++) {
+                var element = chosenReferences[index];
+                if (content.includes('[' + (index + 1).toString() + ']')) {
+                    var temp = content.replace('[' + (index + 1).toString() + ']', removeSpaceFromLink(element));
+                    content = temp;
+                }
+            }
+            return content;
+        } else {
+            return content;
+        }
+    }
+
+    /**
+      * TODO: We have to use the URL to get the template data here like
+      *       first, last publisher etc
+      * @param {String} entryUrl
+      */
+    function builRefTemplate(entryUrl) {
+        // we remove the white space from begining of the url
+        entryUrl = entryUrl.replace(' ', '');
+        var template = {
+            type: 'mwTransclusionInline',
+            attributes: {
+                mw: {
+                    parts: [
+                        {
+                            template: {
+                                target: {
+                                    href: 'Template:Cite',
+                                    wt: 'Cite news'
+                                },
+                                params: {
+                                    first: { wt: 'Mediawiki' },
+                                    last: { wt: 'Wikimedia' },
+                                    title: { wt: 'scribe' },
+                                    url: { wt: entryUrl }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        };
+        return template;
+    }
+
+    /**
+     * Build the edit data to be used on VE surface
+     *
+     * @param {Object} chosenReferences list of selected references
+     * @param {Object} editData list of objects with edit data
+     */
+    function buildVeEditData(chosenReferences, editData) {
+        var replacedContent;
         editData.forEach(function (sectionData) {
-            veData.push(sectionHead);
-            // Spread section into '', '', ''
-            sectionData.section.split( '' ).forEach( function name( elt ) {
-                veData.push( elt );
-            } );
-            veData.push(sectionHeadClose);
-            veData.push(contentOpen);
-            // spread content into '', '', ''
-            sectionData.content.split( '' ).forEach( function name( elt ) {
-                veData.push( elt );
-            } );
-            veData.push(contentClose);
+            replacedContent = replaceCiteTextWithLink(chosenReferences, sectionData.content);
+            sectionData.content = replacedContent.split(' ');
         });
-        return veData;
+        return editData;
+    }
+
+    /**
+     * Write section data to ve surface
+     *
+     * @param {Object} sectionEditData Edit data of a particular section
+     */
+    function writeSectionEditDataObject(sectionEditData) {
+        var surfaceModel = ve.init.target.getSurface().getModel(),
+            sectionHead = { type: 'mwHeading', attributes: { level: 2 } },
+            sectionHeadClose = { type: '/mwHeading' },
+            contentParagraphOpen = { type: 'paragraph', internal: { generated: 'wrapper' } },
+            contentParagraphClose = { type: '/paragraph' },
+            sectionVeData = [],
+            templateClose = { type: '/mwTransclusionInline' };
+        sectionVeData.push(sectionHead);
+        sectionVeData.push(sectionEditData.section);
+        sectionVeData.push(sectionHeadClose);
+        sectionVeData.push(contentParagraphOpen)
+        sectionEditData.content.forEach(function (content) {
+            if (content.includes('http')) {
+                sectionVeData.push(builRefTemplate(content));
+                sectionVeData.push(templateClose);
+            } else {
+                content.split('').forEach(function name(elt) {
+                    sectionVeData.push(elt);
+                });
+                // Add a space between text
+                sectionVeData.push(' ');
+            }
+        });
+        sectionVeData.push(contentParagraphClose);
+        surfaceModel.getFragment().collapseToEnd().insertContent(sectionVeData).collapseToEnd().select();
     }
 
     /**
@@ -581,8 +686,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         } else {
                             //Writing info to VE
-                            var surfaceModel = ve.init.target.getSurface().getModel();
-                            surfaceModel.getFragment().collapseToStart().insertContent(buildVeEditData(editData)).collapseToEnd().select();
+                            var surfaceData = buildVeEditData(chosenReferences, editData)
+                            surfaceData.forEach(function (data) {
+                                writeSectionEditDataObject(data)
+                            });
                         }
                     });
                     // Here we close the dialog after processing
