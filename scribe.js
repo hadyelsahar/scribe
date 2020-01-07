@@ -472,29 +472,32 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     function builRefTemplate(entryUrl) {
         // we remove the white space from begining of the url
         entryUrl = entryUrl.replace(' ', '');
-        var template = {
-            type: 'mwTransclusionInline',
-            attributes: {
-                mw: {
-                    parts: [
-                        {
-                            template: {
-                                target: {
-                                    href: 'Template:Cite',
-                                    wt: 'Cite news'
-                                },
-                                params: {
-                                    first: { wt: 'Mediawiki' },
-                                    last: { wt: 'Wikimedia' },
-                                    title: { wt: 'scribe' },
-                                    url: { wt: entryUrl }
+        var template = [
+            {
+                type: 'mwTransclusionInline',
+                attributes: {
+                    mw: {
+                        parts: [
+                            {
+                                template: {
+                                    target: {
+                                        href: './Template:Cite_web',
+                                        wt: 'Cite web'
+                                    },
+                                    params: {
+                                        first: { wt: 'W3Schools' },
+                                        last: { wt: 'W3Schools' },
+                                        title: { wt: 'W3Schools' },
+                                        url: { wt: entryUrl }
+                                    }
                                 }
                             }
-                        }
-                    ]
+                        ]
+                    }
                 }
-            }
-        };
+            },
+            { type: '/mwTransclusionInline' },
+        ];
         return template;
     }
 
@@ -514,36 +517,77 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
+     * Build section data object
+     *
+     * @param {String} data string of section text
+     */
+    function buildsectionData(data) {
+        var sectionData = [];
+        sectionData.push( { type: 'mwHeading', attributes: { level: 2 } } );
+        data.split('').forEach(function (element) {
+            sectionData.push(element);
+        });
+        sectionData.push({ type: '/mwHeading' });
+        return sectionData;
+    }
+
+    /**
+     * Insert reference to VE surface
+     *
+     * @param {Object} surfaceModel the surface model
+     * @param {Object} data the data to be written
+     */
+    function insertReference(surfaceModel, data) {
+        var origFragment = surfaceModel.getFragment();
+        var referenceModel = new ve.dm.MWReferenceModel(surfaceModel.getDocument());
+        // Prepare and insert an empty reference
+        referenceModel.insertInternalItem(surfaceModel);
+        referenceModel.insertReferenceNode(origFragment.collapseToEnd());
+
+        // Find the contents of the reference inside the internal list
+        var refContentsFragment = surfaceModel.getFragment(
+            // Note: this assumes that the new reference contains an empty paragraph,
+            // which should always be true
+            new ve.dm.LinearSelection(referenceModel.findInternalItem(surfaceModel).getChildren()[0].getRange())
+        );
+        // Insert new contents
+        refContentsFragment.insertContent(data);
+        // Place cursor after the inserted reference node
+        origFragment.collapseToEnd().select();
+    }
+
+    /**
+     * Insert arbitrary content on VE surface
+     *
+     * @param {Object} surfaceModel the surface model
+     * @param {Object} data the data to be written on surface
+     */
+    function insertContent(surfaceModel, data) {
+        // Insert data and place cursor afterwards
+        surfaceModel.getFragment().collapseToEnd().insertContent(data).collapseToEnd();
+    }
+
+
+    /**
      * Write section data to ve surface
      *
      * @param {Object} sectionEditData Edit data of a particular section
      */
     function writeSectionEditDataObject(sectionEditData) {
-        var surfaceModel = ve.init.target.getSurface().getModel(),
-            sectionHead = { type: 'mwHeading', attributes: { level: 2 } },
-            sectionHeadClose = { type: '/mwHeading' },
-            contentParagraphOpen = { type: 'paragraph', internal: { generated: 'wrapper' } },
-            contentParagraphClose = { type: '/paragraph' },
-            sectionVeData = [],
-            templateClose = { type: '/mwTransclusionInline' };
-        sectionVeData.push(sectionHead);
-        sectionVeData.push(sectionEditData.section);
-        sectionVeData.push(sectionHeadClose);
-        sectionVeData.push(contentParagraphOpen)
+        var surfaceModel = ve.init.target.getSurface().getModel();
+        insertContent(surfaceModel, buildsectionData(sectionEditData.section));
         sectionEditData.content.forEach(function (content) {
             if (content.includes('http')) {
-                sectionVeData.push(builRefTemplate(content));
-                sectionVeData.push(templateClose);
+                var referenceObject = builRefTemplate(content);
+                insertReference(surfaceModel, referenceObject);
+                // insert space after reference
+                insertContent(surfaceModel, ' ');
             } else {
-                content.split('').forEach(function name(elt) {
-                    sectionVeData.push(elt);
-                });
-                // Add a space between text
-                sectionVeData.push(' ');
+                insertContent(surfaceModel, content.split(''));
+                // insert a space after every word
+                insertContent(surfaceModel, ' ');
             }
         });
-        sectionVeData.push(contentParagraphClose);
-        surfaceModel.getFragment().collapseToEnd().insertContent(sectionVeData).collapseToEnd().select();
     }
 
     /**
