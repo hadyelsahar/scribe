@@ -315,7 +315,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             var selectedUrl = $('.activeref')[0].lastChild.firstChild.innerHTML;
             var editor = $('.section-' + sectionNumber + 'text-editor')[0].firstChild;
             var selectRefData = {};
-            selectRefData.url = selectedUrl;
+            selectRefData.url = selectedUrl.replace(' ',''); // replace the extra space at begining of  url
             selectRefData.data = $("#mw-scribe-" + sectionNumber.toString() + "-ref-data")[0].innerText;
             // We add the chosen reference URL to the list of chosen references
             chosenReferences.push(selectedUrl);
@@ -556,9 +556,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         // we remove the white space from begining of the url
         entryUrl = entryUrl.replace(' ', '');
         var templateData;
-        sectionUrlTemplateData.forEach(function (data) {
-            if (data.url === entryUrl) {
-                templateData = data.data;
+        sectionUrlTemplateData.forEach(function (sectionData) {
+            if (sectionData.url === entryUrl) {
+                templateData = sectionData.data;
             } else {
                 templateData = '';
             }
@@ -579,6 +579,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                                     },
                                     params: {
                                         first: { wt: templateData[2] },
+<<<<<<< HEAD
+=======
+                                        last: { wt: templateData[2] },
+>>>>>>> Add template resource from server to client cite template data
                                         title: { wt: templateData[1] },
                                         date: { wt: templateData[0] },
                                         url: { wt: entryUrl }
