@@ -41,7 +41,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         slideIndex = 1,
         stack,
         selectedRefIndex = 0,
-        chosenReferences = [];
+        chosenReferences = [],
+        sectionUrlTemplateData = [];
     // surfaceModel = ve.init.target.getSurface().getModel();
 
     /**
@@ -245,10 +246,21 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
                         '<div class=\'mw-scribe-ref-link-box\'>' +
                         '<a class=\'mw-scribe-ref-link\'> ' + item.url + '</a> <p id=\'mw-scribe-ref-domain\'>#' + item.domain + '</p>' +
+                        '<p id=\'mw-scribe-' + section_number.toString() + '-ref-data\'></p>' +
                         '</div>' +
                         '</div>' +
                         '</div>' +
                         '</div>');
+                    $("#mw-scribe-" + section_number.toString() + "-ref-data").hide();
+                    $.getJSON('https://tools.wmflabs.org/scribe/api/v1/references/resources?link=' + item.url).done(
+                        function (data) {
+                            $("#mw-scribe-" + section_number.toString() + "-ref-data").text(
+                                data.publication_date + '_' +
+                                data.publication_title + '_' +
+                                data.publisher_name + '_' +
+                                data.retrieved_date);
+                        }
+                    );
                 });
                 setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
             });
@@ -302,8 +314,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         referenceAddButton.on('click', function () {
             var selectedUrl = $('.activeref')[0].lastChild.firstChild.innerHTML;
             var editor = $('.section-' + sectionNumber + 'text-editor')[0].firstChild;
+            var selectRefData = {};
+            selectRefData.url = selectedUrl.replace(' ',''); // replace the extra space at begining of  url
+            selectRefData.data = $("#mw-scribe-" + sectionNumber.toString() + "-ref-data")[0].innerText;
             // We add the chosen reference URL to the list of chosen references
             chosenReferences.push(selectedUrl);
+            sectionUrlTemplateData.push(selectRefData);
             insertLinkAtCursorPosition(editor, createReferenceLink(selectedRefIndex + 1));
             selectedRefIndex++;
         });
@@ -465,43 +481,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-      * TODO: We have to use the URL to get the template data here like
-      *       first, last publisher etc
-      * @param {String} entryUrl
-      */
-    function builRefTemplate(entryUrl) {
-        // we remove the white space from begining of the url
-        entryUrl = entryUrl.replace(' ', '');
-        var template = [
-            {
-                type: 'mwTransclusionInline',
-                attributes: {
-                    mw: {
-                        parts: [
-                            {
-                                template: {
-                                    target: {
-                                        href: './Template:Cite_web',
-                                        wt: 'Cite web'
-                                    },
-                                    params: {
-                                        first: { wt: 'W3Schools' },
-                                        last: { wt: 'W3Schools' },
-                                        title: { wt: 'W3Schools' },
-                                        url: { wt: entryUrl }
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                }
-            },
-            { type: '/mwTransclusionInline' },
-        ];
-        return template;
-    }
-
-    /**
      * Build the edit data to be used on VE surface
      *
      * @param {Object} chosenReferences list of selected references
@@ -523,7 +502,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      */
     function buildsectionData(data) {
         var sectionData = [];
-        sectionData.push( { type: 'mwHeading', attributes: { level: 2 } } );
+        sectionData.push({ type: 'mwHeading', attributes: { level: 2 } });
         data.split('').forEach(function (element) {
             sectionData.push(element);
         });
@@ -567,20 +546,70 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         surfaceModel.getFragment().collapseToEnd().insertContent(data).collapseToEnd();
     }
 
+    /**
+      * TODO: We have to use the URL to get the template data here like
+      *       first, last publisher etc
+      * @param {Object} sectionUrlTemplateData the data from server of urls
+      * @param {String} entryUrl the particular chosen url
+      */
+    function builRefTemplate(sectionUrlTemplateData, entryUrl) {
+        // we remove the white space from begining of the url
+        entryUrl = entryUrl.replace(' ', '');
+        var templateData;
+        sectionUrlTemplateData.forEach(function (sectionData) {
+            if (sectionData.url === entryUrl) {
+                templateData = sectionData.data;
+            } else {
+                templateData = '';
+            }
+        });
+        // gives us an object [publication_date, publication_title,publisher_name, retrieved_date] from server
+        templateData = templateData.split('_');
+        var template = [
+            {
+                type: 'mwTransclusionInline',
+                attributes: {
+                    mw: {
+                        parts: [
+                            {
+                                template: {
+                                    target: {
+                                        href: './Template:Cite_web',
+                                        wt: 'Cite web'
+                                    },
+                                    params: {
+                                        first: { wt: templateData[2] },
+<<<<<<< HEAD
+=======
+                                        last: { wt: templateData[2] },
+>>>>>>> Add template resource from server to client cite template data
+                                        title: { wt: templateData[1] },
+                                        date: { wt: templateData[0] },
+                                        url: { wt: entryUrl }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            { type: '/mwTransclusionInline' }
+        ];
+        return template;
+    }
 
     /**
      * Write section data to ve surface
      *
      * @param {Object} sectionEditData Edit data of a particular section
      */
-    function writeSectionEditDataObject(sectionEditData) {
+    function writeSectionEditDataObject(sectionUrlTemplateData, sectionEditData) {
         var surfaceModel = ve.init.target.getSurface().getModel();
         insertContent(surfaceModel, buildsectionData(sectionEditData.section));
-        sectionEditData.content.forEach(function (content) {
-            if (content.includes('http')) {
-                var referenceObject = builRefTemplate(content);
-                insertReference(surfaceModel, referenceObject);
-                // insert space after reference
+        sectionEditData.content.forEach( function (content) {
+            if ( content.includes('http') ) {
+                var citeTemplate = builRefTemplate(sectionUrlTemplateData, content);
+                insertReference(surfaceModel, citeTemplate);
                 insertContent(surfaceModel, ' ');
             } else {
                 insertContent(surfaceModel, content.split(''));
@@ -732,7 +761,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                             //Writing info to VE
                             var surfaceData = buildVeEditData(chosenReferences, editData)
                             surfaceData.forEach(function (data) {
-                                writeSectionEditDataObject(data)
+                                writeSectionEditDataObject(sectionUrlTemplateData, data)
                             });
                         }
                     });
@@ -763,7 +792,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         // We get the active section title to be able to get suggestion links from server
                         activeSectionTitle = $('#mw-scribe-section-' + sectionNumber + '-title').text();
-
                         // Populate the edit box with the content of the sections from the article
 
                         populateEditSectionTextBox(sectionNumber);
