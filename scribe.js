@@ -579,10 +579,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                                     },
                                     params: {
                                         first: { wt: templateData[2] },
-<<<<<<< HEAD
-=======
                                         last: { wt: templateData[2] },
->>>>>>> Add template resource from server to client cite template data
                                         title: { wt: templateData[1] },
                                         date: { wt: templateData[0] },
                                         url: { wt: entryUrl }
@@ -660,9 +657,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
     function buildDialogView(articleSectionsPromise) {
         articleSectionsPromise.done(function (data) {
-
             var articleSections = data.parse.sections,
-                selectedSectionsToEdit = [];
+                selectedSectionsToEdit = [],
+                scribeButton;
 
             OO.inheritClass(ScribeDialog, OO.ui.ProcessDialog);
             ScribeDialog.static.name = 'scribeDialog';
@@ -827,18 +824,21 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             ScribeDialog.prototype.getBodyHeight = function () {
                 return $(window).height();
             };
+            scribeButton = new OO.ui.ButtonWidget(
+                {
+                    label: mw.msg( 've-scribe-dialog-title' ),
+                    icon: 'highlight',
+                    framed: false,
+                    disabled: false,
+                    active: true
+                }
+            );
+            scribeButton.destroy = function() {};
+            ve.init.target.getActions().insertItem( scribeButton );
+    
+            ve.init.target.getActions().bsCancelAdded = true;
 
-            function ScribeTool(toolGroup, config) {
-                OO.ui.Tool.call(this, toolGroup, config);
-
-            }
-            OO.inheritClass(ScribeTool, OO.ui.Tool);
-
-            ScribeTool.static.name = 'ScribeTool';
-            ScribeTool.static.title = 'Scribe';
-            ScribeTool.static.icon = 'window';
-
-            ScribeTool.prototype.onSelect = function () {
+            scribeButton.on('click',function () {
                 // create new windowManager
                 windowManager = new OO.ui.WindowManager();
                 $(document.body).append(windowManager.$element);
@@ -848,12 +848,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 dialog = new ScribeDialog();
                 windowManager.addWindows([dialog]);
                 windowManager.openWindow(dialog);
-            };
-
-            ScribeTool.prototype.onUpdateState = function () {
-                this.setActive(false);
-            };
-            ve.ui.toolFactory.register(ScribeTool);
+            });
         });
     }
 
