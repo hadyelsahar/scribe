@@ -38,7 +38,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         stackPanels = [],
         fieldsetContentData = [],
         viewControl = 0,
-        slideIndex = 1,
+        slideIndex = 0,
         stack,
         selectedRefIndex = 0,
         chosenReferences = [],
@@ -179,22 +179,27 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     function showSlides(n) {
         var i;
         var slides = document.getElementsByClassName("mySlides");
-
-        if (n > slides.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = slides.length }
+        if (n > slides.length) { slideIndex = 0 }
+        if (n < 1) { slides[0].style.display = "block"; }
         if (slides.length > 0) {
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
                 $('.mw-scribe-ref-box').removeClass('activeref');
             }
-            slides[slideIndex - 1].style.display = "block";
+            slides[slideIndex].style.display = "block";
             $('.mw-scribe-ref-box').addClass('activeref');
         }
     }
 
     // Next/previous controls
     function plusSlides(n) {
-        showSlides(slideIndex += n);
+        if ( (slideIndex +=n ) < 0 ) {
+            slideIndex = 0;
+            showSlides(slideIndex);
+        }else if(slideIndex > 0 ){
+            showSlides(slideIndex += 1);
+            slideIndex --;
+        }
     }
 
     function setSliderContainerStyle(container) {
@@ -263,6 +268,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                     );
                 });
                 setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
+                var slides = document.getElementsByClassName("mySlides");
+                slides[slideIndex].style.display = "block";
             });
     }
     /**
@@ -795,7 +802,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
-                        showSlides(slideIndex); //We show the slides for the reference section
+                        // showSlides(-1); //We show the slides for the reference section
 
                     } else if (selectedSectionsToEdit.length === 0) {
                         OO.ui.alert(mw.msg('ve-scribe-no-section-selected-dialog-msg')).done(function () {
