@@ -176,29 +176,29 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         return homeviewElements;
     }
 
-    function showSlides(n) {
+    function loadAllReferenceSlides(slides){
         var i;
-        var slides = document.getElementsByClassName("mySlides");
-        if (n > slides.length) { slideIndex = 0 }
-        if (n < 1) { slides[0].style.display = "block"; }
-        if (slides.length > 0) {
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-                $('.mw-scribe-ref-box').removeClass('activeref');
-            }
-            slides[slideIndex].style.display = "block";
-            $('.mw-scribe-ref-box').addClass('activeref');
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+            $('.mw-scribe-ref-box').removeClass('activeref');
         }
+        $('.mw-scribe-ref-box').addClass('activeref');
     }
 
     // Next/previous controls
-    function plusSlides(n) {
-        if ( (slideIndex +=n ) < 0 ) {
+    function plusSlides(index, slides ) {
+        if( index < 0)
+        {
+            slides[0].style.display = "block";
             slideIndex = 0;
-            showSlides(slideIndex);
-        }else if(slideIndex > 0 ){
-            showSlides(slideIndex += 1);
-            slideIndex --;
+        } else if( index === slides.length ){
+            slides[index-1].style.display = "none";
+            slides[0].style.display = "block";
+            slideIndex = 0;
+        } else {
+            slideIndex = index;
+            slides[index-1].style.display = "none";
+            slides[index].style.display = "block";
         }
     }
 
@@ -240,7 +240,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         }
 
         // $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
-        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title)
+        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title + '&article=' + mw.config.get('wgTitle') )
             .done(function (response) {
                 var resource = response.resources;
                 resource.forEach(function (item) {
@@ -269,6 +269,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 });
                 setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
                 var slides = document.getElementsByClassName("mySlides");
+                loadAllReferenceSlides(slides);
                 slides[slideIndex].style.display = "block";
             });
     }
@@ -443,15 +444,20 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     function activeOnClickEventForPrev(prevClass) {
+        var slides = document.getElementsByClassName("mySlides");
         $(prevClass).on('click', function () {
-            plusSlides(-1);
+            slideIndex--;
+            plusSlides(slideIndex, slides);
         });
     }
 
     function activeOnClickEventForNext(nextClass) {
+        var slides = document.getElementsByClassName("mySlides");
         $(nextClass).on('click', function () {
-            plusSlides(1);
+            slideIndex++;
+            plusSlides(slideIndex, slides);
         });
+        
     }
 
     /**
@@ -802,7 +808,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
-                        // showSlides(-1); //We show the slides for the reference section
 
                     } else if (selectedSectionsToEdit.length === 0) {
                         OO.ui.alert(mw.msg('ve-scribe-no-section-selected-dialog-msg')).done(function () {
