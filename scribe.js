@@ -13,7 +13,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         've-scribe-server-error': 'Unable to Reach Server Right now',
         've-scribe-save-prompt-msg': 'Save for later?',
         've-scribe-edit-summary': 'This page was edited using scribe',
-        've-scribe-dialog-action-complete': 'Page created with success \n check your sandbox'
+        've-scribe-dialog-action-complete': 'Page created with success \n check your sandbox',
+        've-scribe-save-dialog-accept': 'yes',
+        've-scribe-save-dialog-deny': 'No'
     });
 }
 
@@ -200,8 +202,16 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             slides[index-1].style.display = "none";
             slides[index].style.display = "block";
         }
+        console.log('index', index);
     }
 
+    function clearPreviousSlidesContent( slides ) {
+        if(slides.length > 0){
+            for (var i = slides.length - 1; i >= 0; --i) {
+                slides[i].remove();
+            }
+        }
+    }
     function setSliderContainerStyle(container) {
         container.css({
             'position': 'relative',
@@ -231,7 +241,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     function addSliderSectionChildNodes(section_number, active_section_title) {
         if ($("#slideshow-container-" + (section_number - 1).toString())) {
             var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides')
-
+            
             for (var i = 0; i < slides1.length; i++) {
                 if (slides1[i].className.split(' ')[0]) {
                     slides1[i].className = "";
@@ -269,6 +279,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 });
                 setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
                 var slides = document.getElementsByClassName("mySlides");
+                console.log('slides.length', slides.length);
+                
                 loadAllReferenceSlides(slides);
                 slides[slideIndex].style.display = "block";
             });
@@ -749,8 +761,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                     OO.ui.confirm(mw.msg('ve-scribe-save-prompt-msg'),
                         {
                             actions: [
-                                { action: 'accept', label: 'Yes', flags: ['primary', 'progressive'] },
-                                { action: 'reject', label: 'No', flags: ['primary', 'destructive'] }
+                                { action: 'accept', label: mw.msg('ve-scribe-save-dialog-accept'), flags: ['primary', 'progressive'] },
+                                { action: 'reject', label: mw.msg('ve-scribe-save-dialog-deny'), flags: ['primary', 'destructive'] }
                             ]
                         }
                     ).done(function (confirmed) {
@@ -806,9 +818,13 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         populateEditSectionTextBox(sectionNumber);
 
+                        // clear previous slides content
+                        clearPreviousSlidesContent(document.getElementsByClassName("mySlides"))
+
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
-
+                        
+                        
                     } else if (selectedSectionsToEdit.length === 0) {
                         OO.ui.alert(mw.msg('ve-scribe-no-section-selected-dialog-msg')).done(function () {
 
