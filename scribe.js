@@ -641,6 +641,20 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
+     * Add references section to VE surface.
+     */
+    function wrtieReferenceListSection() {
+        var surfaceModel = ve.init.target.getSurface().getModel(),
+        referenceSection = 'References', ReferenceSectionData = [];
+        ReferenceSectionData.push({ type: 'mwHeading', attributes: { level: 2 } });
+        referenceSection.split('').forEach( function (character) {
+            ReferenceSectionData.push(character);
+        });
+        ReferenceSectionData.push({ type: '/mwHeading' });
+        insertContent(surfaceModel, ReferenceSectionData);
+    }
+
+    /**
      * construct the content to be saved in the User's Sandbox
      *
      * @param {Object} editData The edit data from the interface elements
@@ -782,8 +796,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                             //Writing info to VE
                             var surfaceData = buildVeEditData(chosenReferences, editData)
                             surfaceData.forEach(function (data) {
-                                writeSectionEditDataObject(sectionUrlTemplateData, data)
+                                writeSectionEditDataObject(sectionUrlTemplateData, data);
                             });
+                            // we write the reference section last
+                            wrtieReferenceListSection();
                         }
                     });
                     // Here we close the dialog after processing
