@@ -202,7 +202,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             slides[index-1].style.display = "none";
             slides[index].style.display = "block";
         }
-        console.log('index', index);
     }
 
     function clearPreviousSlidesContent( slides ) {
@@ -267,8 +266,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         '</div>' +
                         '</div>');
                     $("#mw-scribe-" + section_number.toString() + "-ref-data").hide();
-                    $.getJSON('https://tools.wmflabs.org/scribe/api/v1/references/resources?link=' + item.url).done(
+                    $.get('https://tools.wmflabs.org/scribe/api/v1/references/resources?link=https://www.mmb.cat/fons-i-colleccions/biblioteca/').done(
                         function (data) {
+
                             $("#mw-scribe-" + section_number.toString() + "-ref-data").text(
                                 data.publication_date + '_' +
                                 data.publication_title + '_' +
@@ -279,8 +279,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 });
                 setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
                 var slides = document.getElementsByClassName("mySlides");
-                console.log('slides.length', slides.length);
-                
                 loadAllReferenceSlides(slides);
                 slides[slideIndex].style.display = "block";
             });
@@ -606,7 +604,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                                         first: { wt: templateData[2] },
                                         last: { wt: templateData[2] },
                                         title: { wt: templateData[1] },
-                                        date: { wt: templateData[0] },
+                                        date: { wt: templateData[3] },
                                         url: { wt: entryUrl }
                                     }
                                 }
@@ -617,6 +615,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             },
             { type: '/mwTransclusionInline' }
         ];
+
         return template;
     }
 
@@ -804,6 +803,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         }
                     });
 
+                    if ( (viewControl + 1) === selectedSectionsToEdit.length) {
+                        this.actions.setMode('final');
+                    }
+
                     // We test of the sections to be editted have been chosen
                     if (selectedSectionsToEdit.length !== 0 &&
                         viewControl < selectedSectionsToEdit[viewControl]) {
@@ -833,12 +836,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                     }
                     viewControl++;
                     selectedSectionsToEdit = [];
-
-                    if (viewControl === (stackPanels.length - 1) ||
-                        sectionNumber === (stackPanels.length - 1)) {
-
-                        this.actions.setMode('final');
-                    }
                 } else {
                     //closing the dialog
                     // dialog.close();
