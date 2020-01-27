@@ -211,25 +211,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             }
         }
     }
-    function setSliderContainerStyle(container) {
-        container.css({
-            'position': 'relative',
-            'overflow': 'hidden',
-            'border-radius': '5px',
-            'border': '0.5px solid black',
-            'width': '377px',
-            'height': '120px',
-            'background-color': 'grey',
-            'margin-top': '25px',
-            'z-index': '1'
-        });
-    }
 
     function makeSliderHtml(section_number) {
         // TODO: We have to generate the sections with id mw-scribe-ref-box
         // dynamically given the data we have from resources
         var html = '<div id="mw-scribe-slider-' + section_number + '">' +
-            '<div id="slideshow-container-' + section_number + '">' +
+            '<div class="slideshow-container" id="slideshow-container-' + section_number + '">' +
             '<a class="prev">&#10094;</a> ' +
             '<a class="next">&#10095;</a>' +
             '</div>' +
@@ -277,7 +264,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         }
                     );
                 });
-                setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
+                // setSliderContainerStyle($("#slideshow-container-" + section_number.toString()));
+                // setSliderContainerStyle('slideshow-container');
                 var slides = document.getElementsByClassName("mySlides");
                 loadAllReferenceSlides(slides);
                 slides[slideIndex].style.display = "block";
@@ -842,7 +830,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
-                        
                         
                     } else if (selectedSectionsToEdit.length === 0) {
                         OO.ui.alert(mw.msg('ve-scribe-no-section-selected-dialog-msg')).done(function () {
