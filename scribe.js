@@ -178,7 +178,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         return homeviewElements;
     }
 
-    function loadAllReferenceSlides(slides){
+    function loadAllReferenceSlides(slides) {
         var i;
         for (i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
@@ -188,24 +188,23 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     // Next/previous controls
-    function plusSlides(index, slides ) {
-        if( index < 0)
-        {
+    function plusSlides(index, slides) {
+        if (index < 0) {
             slides[0].style.display = "block";
             slideIndex = 0;
-        } else if( index === slides.length ){
-            slides[index-1].style.display = "none";
+        } else if (index === slides.length) {
+            slides[index - 1].style.display = "none";
             slides[0].style.display = "block";
             slideIndex = 0;
         } else {
             slideIndex = index;
-            slides[index-1].style.display = "none";
+            slides[index - 1].style.display = "none";
             slides[index].style.display = "block";
         }
     }
 
-    function clearPreviousSlidesContent( slides ) {
-        if(slides.length > 0){
+    function clearPreviousSlidesContent(slides) {
+        if (slides.length > 0) {
             for (var i = slides.length - 1; i >= 0; --i) {
                 slides[i].remove();
             }
@@ -227,7 +226,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     function addSliderSectionChildNodes(section_number, active_section_title) {
         if ($("#slideshow-container-" + (section_number - 1).toString())) {
             var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides')
-            
+
             for (var i = 0; i < slides1.length; i++) {
                 if (slides1[i].className.split(' ')[0]) {
                     slides1[i].className = "";
@@ -236,7 +235,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         }
 
         // $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
-        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title + '&article=' + mw.config.get('wgTitle') )
+        $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title + '&article=' + mw.config.get('wgTitle'))
             .done(function (response) {
                 var resource = response.resources;
                 resource.forEach(function (item) {
@@ -321,7 +320,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             var selectedUrl = $('.activeref')[0].lastChild.firstChild.innerHTML;
             var editor = $('.section-' + sectionNumber + 'text-editor')[0].firstChild;
             var selectRefData = {};
-            selectRefData.url = selectedUrl.replace(' ',''); // replace the extra space at begining of  url
+            selectRefData.url = selectedUrl.replace(' ', ''); // replace the extra space at begining of  url
             selectRefData.data = $("#mw-scribe-" + sectionNumber.toString() + "-ref-data")[0].innerText;
             // We add the chosen reference URL to the list of chosen references
             chosenReferences.push(selectedUrl);
@@ -455,7 +454,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             slideIndex++;
             plusSlides(slideIndex, slides);
         });
-        
+
     }
 
     /**
@@ -615,8 +614,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     function writeSectionEditDataObject(sectionUrlTemplateData, sectionEditData) {
         var surfaceModel = ve.init.target.getSurface().getModel();
         insertContent(surfaceModel, buildsectionData(sectionEditData.section));
-        sectionEditData.content.forEach( function (content) {
-            if ( content.includes('http') ) {
+        sectionEditData.content.forEach(function (content) {
+            if (content.includes('http')) {
                 var citeTemplate = builRefTemplate(sectionUrlTemplateData, content);
                 insertReference(surfaceModel, citeTemplate);
                 insertContent(surfaceModel, ' ');
@@ -633,9 +632,9 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      */
     function wrtieReferenceListSection() {
         var surfaceModel = ve.init.target.getSurface().getModel(),
-        referenceSection = 'References', ReferenceSectionData = [];
+            referenceSection = 'References', ReferenceSectionData = [];
         ReferenceSectionData.push({ type: 'mwHeading', attributes: { level: 2 } });
-        referenceSection.split('').forEach( function (character) {
+        referenceSection.split('').forEach(function (character) {
             ReferenceSectionData.push(character);
         });
         ReferenceSectionData.push({ type: '/mwHeading' });
@@ -807,7 +806,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         }
                     });
 
-                    if ( (viewControl + 1) === selectedSectionsToEdit.length) {
+                    if ((viewControl + 1) === selectedSectionsToEdit.length) {
                         this.actions.setMode('final');
                     }
 
@@ -830,7 +829,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
                         // We Add the slider section for edit view
                         addSliderSectionChildNodes(sectionNumber, activeSectionTitle);
-                        
+
                     } else if (selectedSectionsToEdit.length === 0) {
                         OO.ui.alert(mw.msg('ve-scribe-no-section-selected-dialog-msg')).done(function () {
 
@@ -854,19 +853,19 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             };
             scribeButton = new OO.ui.ButtonWidget(
                 {
-                    label: mw.msg( 've-scribe-dialog-title' ),
+                    label: mw.msg('ve-scribe-dialog-title'),
                     icon: 'highlight',
                     framed: false,
                     disabled: false,
                     active: true
                 }
             );
-            scribeButton.destroy = function() {};
-            ve.init.target.getActions().insertItem( scribeButton );
-    
+            scribeButton.destroy = function () { };
+            ve.init.target.getActions().insertItem(scribeButton);
+
             ve.init.target.getActions().bsCancelAdded = true;
 
-            scribeButton.on('click',function () {
+            scribeButton.on('click', function () {
                 // create new windowManager
                 windowManager = new OO.ui.WindowManager();
                 $(document.body).append(windowManager.$element);
