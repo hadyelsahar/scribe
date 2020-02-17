@@ -141,12 +141,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-    * Creates the first view shown to the user on launch.
-    *
-    * @param {Object} pageTitle - The page which is actively under edit.
-    * @param {Object} articleSections - The sections in the page.
-    * @return {Object} - The panel containing elements of the edit interface.
-    */
+     * Creates the first view shown to the user on launch.
+     *
+     * @param {Object} pageTitle - The page which is actively under edit.
+     * @param {Object} articleSections - The sections in the page.
+     * @return {Object} - The panel containing elements of the edit interface.
+     */
 
     function createHomeView(pageTitle, articleSections) {
         var articleNameLabel, articleLegend, homeFieldSet, homePanel,
@@ -184,6 +184,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * Loads all references into the slider
      * @param {Object} slides - the slides to be added to ref section.
      */
+
     function loadAllReferenceSlides(slides) {
         var i;
         for (i = 0; i < slides.length; i++) {
@@ -361,11 +362,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-    * Creates PanelLayout of a section's edit interface.
-    *
-    * @param {Object} section - The section whose edit interface we want to create.
-    * @return {Object} - The panel containing elements of the edit interface.
-    */
+     * Creates PanelLayout of a section's edit interface.
+     *
+     * @param {Object} section - The section whose edit interface we want to create.
+     * @return {Object} - The panel containing elements of the edit interface.
+     */
 
     function createEditSectionPanel(section) {
         var sectionTitle, editSurface, referenceAddButton, editButtonGroup,
@@ -441,12 +442,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-    * Create an instance of a dialog.
-    *
-    * @param {Object} config - dialog configuration.
-    * Note: Changing this name ScribeDialog means changing the dialog
-    * name name below.
-    */
+     * Create an instance of a dialog.
+     *
+     * @param {Object} config - dialog configuration.
+     * Note: Changing this name ScribeDialog means changing the dialog
+     * name name below.
+     */
 
     function ScribeDialog(config) {
         ScribeDialog.parent.call(this, config);
@@ -603,12 +604,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-      * TODO: We have to use the URL to get the template data here like
-      *       first, last publisher etc
-      * @param {Object} sectionUrlTemplateData - the data from server of urls
-      * @param {String} entryUrl - the particular chosen url
-      * @return {Object} template - reference template for VE surface 
-      */
+     * TODO: We have to use the URL to get the template data here like
+     *       first, last publisher etc
+     * @param {Object} sectionUrlTemplateData - the data from server of urls
+     * @param {String} entryUrl - the particular chosen url
+     * @return {Object} template - reference template for VE surface 
+     */
 
     function builRefTemplate(sectionUrlTemplateData, entryUrl) {
         // we remove the white space from begining of the url
@@ -736,6 +737,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * Builds scribe interface dialog
      * @param {Object} articleSectionsPromise - promise from article section api call
      */
+
     function buildDialogView(articleSectionsPromise) {
         articleSectionsPromise.done(function (data) {
             var articleSections = data.parse.sections,
