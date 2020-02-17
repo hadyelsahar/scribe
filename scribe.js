@@ -84,11 +84,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     }
 
     /**
-        * Create a FieldsetLayout.
-        *
-        * @param {Object} contentElements - The elements added to the fielset.
-        * @return {Object} - The FieldsetLayout.
-        */
+     * Create a FieldsetLayout.
+     *
+     * @param {Object} contentElements - The elements added to the fielset.
+     * @return {Object} - The FieldsetLayout.
+     */
 
     function createFieldSet(contentElements) {
         var fieldset = new OO.ui.FieldsetLayout({
@@ -105,6 +105,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {String} sectionNumber the section number
      * @param {String} sectionName the name of the section 
      */
+
     function getFieldsetSectionDataStructure(sectionNumber, sectionName) {
         var data = {};
         data.section = sectionName;
@@ -119,6 +120,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {String} sectionName the name of the section
      * @param {Object} fieldSetContentElements the fieldset content with elements
      */
+
     function addPanelElementsToPanel(sectionNumber, sectionName, fieldSetContentElements) {
         var fieldSet,
             panel;
@@ -178,6 +180,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         return homeviewElements;
     }
 
+    /**
+     * Loads all references into the slider
+     * @param {Object} slides - the slides to be added to ref section.
+     */
     function loadAllReferenceSlides(slides) {
         var i;
         for (i = 0; i < slides.length; i++) {
@@ -187,7 +193,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         $('.mw-scribe-ref-box').addClass('activeref');
     }
 
-    // Next/previous controls
+    /**
+     * Swaps slides based on user operation
+     * @param {Number} index - the index to display
+     * @param {Object} slides - the slides in the reference section
+     */
+
     function plusSlides(index, slides) {
         if (index < 0) {
             slides[0].style.display = "block";
@@ -203,6 +214,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         }
     }
 
+    /**
+     * Clear the slider when edit section changes
+     * @param {Object} slides - slides in the previous slider
+     */
+
     function clearPreviousSlidesContent(slides) {
         if (slides.length > 0) {
             for (var i = slides.length - 1; i >= 0; --i) {
@@ -210,6 +226,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             }
         }
     }
+
+    /**
+     * Makes the HTML conntent for the slider
+     * @param {Number} section_number - the section number under edit
+     * @return {HTMLObjectElement} - the html object to be added on the slider
+     */
 
     function makeSliderHtml(section_number) {
         // TODO: We have to generate the sections with id mw-scribe-ref-box
@@ -223,6 +245,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         return html;
     }
 
+    /**
+     * Add slider child nodes with server infomation
+     * @param {Number} section_number - the section number under edit.
+     * @param {String} active_section_title - the section title of active section.
+     */
+
     function addSliderSectionChildNodes(section_number, active_section_title) {
         if ($("#slideshow-container-" + (section_number - 1).toString())) {
             var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides')
@@ -233,7 +261,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 }
             }
         }
-
         // $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + mw.config.get( 'wgTitle' ).toLowerCase())
         $.get('https://tools.wmflabs.org/scribe/api/v1/references?section=' + active_section_title + '&article=' + mw.config.get('wgTitle'))
             .done(function (response) {
@@ -270,11 +297,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 slides[slideIndex].style.display = "block";
             });
     }
+
     /**
      * Constructs link which VE should recognize
-     *
      * @param {String} url the selected url in reference section
      */
+
     function createReferenceLink(selectedRefIndex) {
 
         // var ref = '<ref name=sky17082019-1000>'+
@@ -293,6 +321,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {TextInputWidget} textEditor the text editor
      * @param {String} link the formatted url to insert
      */
+
     function insertLinkAtCursorPosition(textEditor, link) {
         //IE support
         if (document.selection) {
@@ -315,6 +344,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {ButtonWidget} referenceAddButton the button to be activated
      * @param {String} sectionNumber the section number currently under edit
      */
+
     function addReferenceButtonClickAction(referenceAddButton, sectionNumber) {
         referenceAddButton.on('click', function () {
             var selectedUrl = $('.activeref')[0].lastChild.firstChild.innerHTML;
@@ -440,6 +470,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         return article_list;
     }
 
+    /**
+     * Add click event listener to the previous button
+     * @param {String} prevClass - class to add event listener.
+     */
+
     function activeOnClickEventForPrev(prevClass) {
         var slides = document.getElementsByClassName("mySlides");
         $(prevClass).on('click', function () {
@@ -447,6 +482,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             plusSlides(slideIndex, slides);
         });
     }
+
+    /**
+     * Add click event listener to the next button
+     * @param {String} nextClass - class to add event listener.
+     */
 
     function activeOnClickEventForNext(nextClass) {
         var slides = document.getElementsByClassName("mySlides");
@@ -462,6 +502,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      *
      * @param {String} entryUrl url to process
      */
+
     function removeSpaceFromLink(entryUrl) {
         // remove white space from begining of the url
         entryUrl = entryUrl.replace(' ', '');
@@ -474,6 +515,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {Object} chosenReferences array of selected refs
      * @param {String} content the content with citations
      */
+
     function replaceCiteTextWithLink(chosenReferences, content) {
         // check for citations in content before replacing
         if (content.includes('[') && content.includes(']')) {
@@ -496,6 +538,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {Object} chosenReferences list of selected references
      * @param {Object} editData list of objects with edit data
      */
+
     function buildVeEditData(chosenReferences, editData) {
         var replacedContent;
         editData.forEach(function (sectionData) {
@@ -510,6 +553,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      *
      * @param {String} data string of section text
      */
+
     function buildsectionData(data) {
         var sectionData = [];
         sectionData.push({ type: 'mwHeading', attributes: { level: 2 } });
@@ -526,6 +570,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {Object} surfaceModel the surface model
      * @param {Object} data the data to be written
      */
+
     function insertReference(surfaceModel, data) {
         var origFragment = surfaceModel.getFragment();
         var referenceModel = new ve.dm.MWReferenceModel(surfaceModel.getDocument());
@@ -551,6 +596,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {Object} surfaceModel the surface model
      * @param {Object} data the data to be written on surface
      */
+
     function insertContent(surfaceModel, data) {
         // Insert data and place cursor afterwards
         surfaceModel.getFragment().collapseToEnd().insertContent(data).collapseToEnd();
@@ -559,9 +605,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     /**
       * TODO: We have to use the URL to get the template data here like
       *       first, last publisher etc
-      * @param {Object} sectionUrlTemplateData the data from server of urls
-      * @param {String} entryUrl the particular chosen url
+      * @param {Object} sectionUrlTemplateData - the data from server of urls
+      * @param {String} entryUrl - the particular chosen url
+      * @return {Object} template - reference template for VE surface 
       */
+
     function builRefTemplate(sectionUrlTemplateData, entryUrl) {
         // we remove the white space from begining of the url
         entryUrl = entryUrl.replace(' ', '');
@@ -611,6 +659,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      *
      * @param {Object} sectionEditData Edit data of a particular section
      */
+
     function writeSectionEditDataObject(sectionUrlTemplateData, sectionEditData) {
         var surfaceModel = ve.init.target.getSurface().getModel();
         insertContent(surfaceModel, buildsectionData(sectionEditData.section));
@@ -630,6 +679,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     /**
      * Add references section to VE surface.
      */
+
     function wrtieReferenceListSection() {
         var surfaceModel = ve.init.target.getSurface().getModel(),
             referenceSection = 'References', ReferenceSectionData = [];
@@ -646,6 +696,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      *
      * @param {Object} editData The edit data from the interface elements
      */
+
     function constructSanboxPageContent(editData) {
         var sandboxPageContent;
         sandboxPageContent = '';
@@ -660,6 +711,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @param {Object} sandboxData The data to be edited
      * @param {String} username The name of the currently logged in user
      */
+
     function CreateSanboxSubpage(sandboxData, username) {
         var date, pageTitle;
         pageTitle = 'User:' + username + '/sandbox/' + mw.config.get('wgTitle');
@@ -680,6 +732,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         });
     }
 
+    /**
+     * Builds scribe interface dialog
+     * @param {Object} articleSectionsPromise - promise from article section api call
+     */
     function buildDialogView(articleSectionsPromise) {
         articleSectionsPromise.done(function (data) {
             var articleSections = data.parse.sections,
@@ -878,6 +934,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             });
         });
     }
+
+    /**
+     * Populates text box in edit section with page data
+     * @param {Number} - section number under active edit
+     */
 
     function populateEditSectionTextBox(sectionNumber) {
         api.get({
