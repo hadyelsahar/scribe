@@ -19,12 +19,12 @@
 
 #mw-scribe-action-button-group{
 	overflow: hidden;
-    max-width: inherit;
-    margin-bottom: -3px;
-    flex-wrap: wrap;
-    width: 100%;
-    opacity: 0.7;
-    border-bottom: none;
+  max-width: inherit;
+  margin-bottom: -3px;
+  flex-wrap: wrap;
+  width: 100%;
+  opacity: 0.7;
+  border-bottom: none;
 }
 
 .mw-scribe-ref-btn {
@@ -35,8 +35,8 @@
 }
 
 .slideshow-container {
-    width: 433px;
-  }
+  width: 433px;
+}
 
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
@@ -44,26 +44,13 @@
 }
 
 .mw-scribe-add-reference-button{
-	  padding: 10px;
-	  text-align: cent375er;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-size: 16px;
-	  margin: 4px 2px;
+	padding: 10px;
+	text-align: cent375er;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
 }
-
-.oo-ui-textInputWidget .oo-ui-inputWidget-input {
-}
-
-
-/*.oo-ui-buttonElement-button{*/
-/*	border-radius: 40%;*/
-/*    z-index: 1;*/
-/*    background-color: green;*/
-/*    margin-left: 160px;*/
-/*    margin-top: -125px;*/
-/*}*/
-
 
 .mw-scribe-ref-box {
   height: 70px;
@@ -80,36 +67,35 @@
 
 .mw-scribe-ref-link-box{
 	padding-top: 20px;
-    display: flex;
+  display: flex;
 }
 
 .mw-scribe-ref-link{
 	margin-top: 5px;
-    margin-left: 5px;
-    width: 200px;
-    display: flex;
-    line-height: normal;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  margin-left: 5px;
+  width: 200px;
+  display: flex;
+  line-height: normal;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .mw-scribe-ref-text {
 	width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 10px;
-    line-height: 1.5em;
-    /* height: 3em; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  line-height: 1.5em;
 }
 
 #mw-scribe-ref-domain{
 	float: right;
-    padding-left: 80px;
-    color: red;
-    font-weight: bold;
-    font-size: 12px;
+  padding-left: 80px;
+  color: red;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .mw-scribe-reference-section {
@@ -120,9 +106,6 @@
 /*S TYLING FOR THE SLIDER */
 
 .slideshow-container {
-  /*max-width: 1000px;*/
-  /*position: relative;*/
-  /* margin: auto; */
   margin-left: 0px;
   position: relative;
   border-radius: 5px;
@@ -133,65 +116,9 @@
 }
 
 /* 
-  ##Device = Desktops
-  ##Screen = 1281px to higher resolution desktops
-*/
-
-@media (min-width: 1281px) {
-  
-  /*//CSS*/
-  
-}
-
-/* 
-  ##Device = Laptops, Desktops
-  ##Screen = B/w 1025px to 1280px
-*/
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-  
-  /*//CSS*/
-  
-}
-
-/* 
-  ##Device = Tablets, Ipads (portrait)
-  ##Screen = B/w 768px to 1024px
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  
-  /*//CSS*/
-  
-}
-
-/* 
-  ##Device = Tablets, Ipads (landscape)
-  ##Screen = B/w 768px to 1024px
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  
-  /*//CSS*/
-  
-}
-
-/* 
-  ##Device = Low Resolution Tablets, Mobiles (Landscape)
-  ##Screen = B/w 481px to 767px
-*/
-
-@media (min-width: 481px) and (max-width: 767px) {
-  
-  /*//CSS*/
-  
-}
-
-/* 
   ##Device = Most of the Smartphones Mobiles (Portrait)
   ##Screen = B/w 320px to 479px
 */
-
 @media (min-width: 320px) and (max-width: 414px) {
   
  .mw-scribe-reference-section{
@@ -200,24 +127,22 @@
 	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
 		width: 108px;
 	}
-
-	.slideshow-container {
-	    width: 310px;
-	  }
+  .slideshow-container {
+	  width: 310px;
+	}
   #mw-scribe-edit-section-menu-btn-1{
     width: 33.5%;
     float: left;
   }
-  
+
   #mw-scribe-edit-section-menu-btn-2{
     width: 22%;
   }
-  
+
   #mw-scribe-edit-section-menu-btn-3{
     width: 31.7%;
     float:left;
   }
-  
 }
 
 @media (min-width:360px) and (max-width:361px) {
@@ -228,175 +153,46 @@
 		width: 117px;
 	}
 
-	  #mw-scribe-edit-section-menu-btn-1{
-	    width: 33%;
-	    float: left;
-	  }
-	  
-	  #mw-scribe-edit-section-menu-btn-2{
-	    width: 30%;
-	    float: left;
-	  }
-	  
-	  #mw-scribe-edit-section-menu-btn-3{
-	    width: 30.7%;
-	    float: right;
-	  }
-	  .slideshow-container {
-	    width: 310px;
-	  }
+	#mw-scribe-edit-section-menu-btn-1{
+	  width: 33%;
+	  float: left;
+	}
+	#mw-scribe-edit-section-menu-btn-2{
+	  width: 30%;
+	  float: left;
+	}
+	#mw-scribe-edit-section-menu-btn-3{
+	  width: 30.7%;
+	  float: right;
+	}
+	.slideshow-container {
+	  width: 310px;
+	}
 }
 
 
 @media (min-width:414px) and (max-width:415px) {
-		.mw-scribe-reference-section{
+	.mw-scribe-reference-section{
 		margin-left: 18px;
 	}
 	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
 		width: 117px;
 	}
 
-	  #mw-scribe-edit-section-menu-btn-1{
-	    width: 33%;
-	  }
-	  
-	  #mw-scribe-edit-section-menu-btn-2{
-	    width: 33.3%;
-	  }
-	  
-	  #mw-scribe-edit-section-menu-btn-3{
-	    width: 33.3%;
-	  }
-	  .slideshow-container {
-	    width: 310px;
-	  }
+	#mw-scribe-edit-section-menu-btn-1{
+	  width: 33%;
+	}
+	#mw-scribe-edit-section-menu-btn-2{
+	  width: 33.3%;
+	}
+
+	#mw-scribe-edit-section-menu-btn-3{
+	  width: 33.3%;
+	}
+	.slideshow-container {
+	  width: 310px;
+	}
 }
-
-
-
-
-
-
-/*@media only screen and (min-width: 360px) {*/
-	
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-/*		width: 117px;*/
-/*	}*/
-
-/*	.mw-scribe-reference-section{*/
-/*		margin-left: 1px;*/
-/*	}*/
-/*  .slideshow-container {*/
-/*    width: 293px;*/
-/*  }*/
-/*  #mw-scribe-edit-section-menu-btn-1{*/
-/*    width: 20%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-2{*/
-/*    width: 30.2%;*/
-/*    float: right;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-3{*/
-/*    float: right;*/
-/*  }*/
-/*}*/
-
-/*@media only screen and (max-width: 667px) {*/
-/*  .mw-scribe-reference-section{*/
-/*		margin-left: 1px;*/
-/*	}*/
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-/*		width: 104px;*/
-		
-/*	}*/
-/*	.slideshow-container {*/
-/*    color: black;*/
-/*  }*/
-/*}*/
-
-/*@media only screen and (min-width: 375px) {*/
-	/*.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-	/*	width: 104px;*/
-	/*}*/
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,*/
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-/*		width: 104px;*/
-/*	}*/
-
-/*  .mw-scribe-reference-section{*/
-/*	margin-left: 4px;*/
-/*	}*/
-	
-/*  #mw-scribe-edit-section-menu-btn-1{*/
-/*    width: 20%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-2{*/
-/*    width: 33.3%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-3{*/
-/*    width: 33.3%;*/
-/*  }*/
-/*}*/
-
-/*@media only screen and (min-width: 768px) {*/
-/*	  .mw-scribe-reference-section{*/
-/*		margin-left: -15px;*/
-/*	}*/
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-/*		width: 117px;*/
-/*	}*/
-/*	.mw-scribe-reference-section{*/
-/*		margin-left: -15px;*/
-/*	}*/
-  /*.slideshow-container {*/
-  /*  width: 431px;*/
-  /*}*/
-/*  #mw-scribe-edit-section-menu-btn-1{*/
-/*    width: 20%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-2{*/
-/*    width: 33.3%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-3{*/
-/*    width: 33.3%;*/
-/*  }*/
-/*}*/
-
-/*@media only screen and (min-width: 414px) {*/
-/*	.mw-scribe-reference-section{*/
-/*		margin-left: 18px;*/
-/*	}*/
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-/*		width: 117px;*/
-/*	}*/
-
-/*  #mw-scribe-edit-section-menu-btn-1{*/
-/*    width: 20%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-2{*/
-/*    width: 33.3%;*/
-/*  }*/
-  
-/*  #mw-scribe-edit-section-menu-btn-3{*/
-/*    width: 33.3%;*/
-/*  }*/
-/*}*/
-
-/*@media only screen and (min-width: 800px) {*/
-/*	.mw-scribe-reference-section{*/
-/*		margin-left: 63px;*/
-/*	}*/
-/*	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{*/
-/*		width: 145px;*/
-/*	}*/
-/*}*/
 
 /* Hide the images by default */
 .mySlides {
@@ -433,17 +229,17 @@
 
 .mw-scribe-select-info{
 	margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: larger;
-    text-align: left;
-    font-weight: bold;
-    opacity: 0.8;
+  margin-bottom: 10px;
+  font-size: larger;
+  text-align: left;
+  font-weight: bold;
+  opacity: 0.8;
 }
 
 .mw-scribe-section-name-text{
 	font-size: 20px;
-    margin-bottom: 25px;
-    opacity: 0.6;
+  margin-bottom: 25px;
+  opacity: 0.6;
 }
 
 .mw-scribe-text-editor{
