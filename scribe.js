@@ -335,6 +335,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             var startPos = textEditor.selectionStart;
             var endPos = textEditor.selectionEnd;
             textEditor.value = textEditor.value.substring(0, startPos) + link + textEditor.value.substring(endPos, textEditor.value.length);
+            textEditor.selectionStart = startPos + link.length;
+            textEditor.selectionEnd = startPos + link.length;
         } else {
             textEditor.value += link;
         }
@@ -640,7 +642,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                                         first: { wt: templateData[2] },
                                         last: { wt: templateData[2] },
                                         title: { wt: templateData[1] },
-                                        date: { wt: templateData[3] },
+                                        date: { wt: 'January,2 2020' }, //templateData[3]
                                         url: { wt: entryUrl }
                                     }
                                 }
