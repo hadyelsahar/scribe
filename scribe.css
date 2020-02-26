@@ -70,29 +70,44 @@
   display: flex;
 }
 
+.mw-scribe-ref-title{
+	font-size: 12px;
+    /* float: left; */
+    margin-left: 20px;
+    margin-top: -12px;
+    margin-bottom: 7px;
+    height: 1em;
+    line-height: 1em;
+    font-weight: bold;
+    white-space: pre-wrap;
+    overflow: hidden;
+}
+
 .mw-scribe-ref-link{
-	margin-top: 5px;
-  margin-left: 5px;
-  width: 200px;
-  display: flex;
-  line-height: normal;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 100%;
+    word-break: break-all;
+    height: 1em;
+    text-overflow: hidden;
+    overflow: auto;
+    /*with: 325px to be added when #proposed is removed*/
 }
 
 .mw-scribe-ref-text {
 	width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 10px;
-  line-height: 1.5em;
+    text-overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: -4px;
+    height: 3em;
+    font-size: 9.5px;
+    line-height: 1.5em;
+    white-space: pre-wrap;
+    overflow: hidden;
 }
 
 #mw-scribe-ref-domain{
-	float: right;
-  padding-left: 80px;
+  float: right;
   color: red;
   font-weight: bold;
   font-size: 12px;
@@ -115,12 +130,34 @@
   margin-top: 25px;
 }
 
+/*--- GOOGLE PIXEL AND PIXEL 2X*/
+@media (min-width: 376px) and (max-width: 411px) {
+	.mw-scribe-reference-section{
+		margin-left: 18px;
+	}
+	.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button, .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button{
+		width: 117px;
+	}
+	  .slideshow-container {
+		  width: 310px;
+		}
+	#mw-scribe-edit-section-menu-btn-1{
+	  width: 33%;
+	}
+	#mw-scribe-edit-section-menu-btn-2{
+	  width: 33%;
+	}
+	#mw-scribe-edit-section-menu-btn-3{
+	  width: 32%;
+	}
+}
+
 /* 
   ##Device = Most of the Smartphones Mobiles (Portrait)
   ##Screen = B/w 320px to 479px
 */
-@media (min-width: 320px) and (max-width: 414px) {
-  
+@media (min-width: 375px) and (max-width: 410px) {
+
  .mw-scribe-reference-section{
 		margin-left: 0.1px;
 	}
@@ -193,6 +230,7 @@
 	  width: 310px;
 	}
 }
+
 
 /* Hide the images by default */
 .mySlides {
