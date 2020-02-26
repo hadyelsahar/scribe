@@ -271,6 +271,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         '<div class="mySlides fade">' +
                         '<div class="text">' +
                         '<div class=\'mw-scribe-ref-box\'>' +
+                        '<p class=\'mw-scribe-ref-title\'>' + 'The title of the reference is going to appear here' + '</p>' +
                         '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
                         '<div class=\'mw-scribe-ref-link-box\'>' +
                         '<a class=\'mw-scribe-ref-link\'> ' + item.url + '</a> <p id=\'mw-scribe-ref-domain\'>#' + item.domain + '</p>' +
