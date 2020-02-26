@@ -274,7 +274,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         '<p class=\'mw-scribe-ref-title\'>' + 'The title of the reference is going to appear here' + '</p>' +
                         '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
                         '<div class=\'mw-scribe-ref-link-box\'>' +
-                        '<a class=\'mw-scribe-ref-link\'> ' + item.url + '</a> <p id=\'mw-scribe-ref-domain\'>#' + item.domain + '</p>' +
+                        '<p class=\'mw-scribe-ref-link\'><a>' + item.url + '</a></p>'+
                         '<p id=\'mw-scribe-' + section_number.toString() + '-ref-data\'></p>' +
                         '</div>' +
                         '</div>' +
