@@ -66,8 +66,12 @@
 }
 
 .mw-scribe-ref-link-box{
-	padding-top: 20px;
-  display: flex;
+    padding-top: 13px;
+    overflow: hidden;
+    height: 1.5em;
+    line-height: 1em;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
 }
 
 .mw-scribe-ref-title{
@@ -80,7 +84,7 @@
     line-height: 1em;
     font-weight: bold;
     white-space: pre-wrap;
-    overflow: hidden;
+    overflow: hidden;	
 }
 
 .mw-scribe-ref-link{
@@ -91,8 +95,9 @@
     height: 1em;
     text-overflow: hidden;
     overflow: auto;
-    /*with: 325px to be added when #proposed is removed*/
+    /*with: 325px to be added when #proposed is removed*/ 
 }
+
 
 .mw-scribe-ref-text {
 	width: 100%;
@@ -141,15 +146,17 @@
 	  .slideshow-container {
 		  width: 310px;
 		}
-	#mw-scribe-edit-section-menu-btn-1{
-	  width: 33%;
-	}
-	#mw-scribe-edit-section-menu-btn-2{
-	  width: 33%;
-	}
-	#mw-scribe-edit-section-menu-btn-3{
-	  width: 32%;
-	}
+	  #mw-scribe-edit-section-menu-btn-1{
+	    width: 33%;
+	  }
+	
+	  #mw-scribe-edit-section-menu-btn-2{
+	    width: 33%;
+	  }
+	
+	  #mw-scribe-edit-section-menu-btn-3{
+	    width: 32%;
+	  }
 }
 
 /* 
@@ -157,7 +164,7 @@
   ##Screen = B/w 320px to 479px
 */
 @media (min-width: 375px) and (max-width: 410px) {
-
+  
  .mw-scribe-reference-section{
 		margin-left: 0.1px;
 	}
