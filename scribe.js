@@ -15,7 +15,10 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         've-scribe-edit-summary': 'This page was edited using scribe',
         've-scribe-dialog-action-complete': 'Page created with success \n check your sandbox',
         've-scribe-save-dialog-accept': 'yes',
-        've-scribe-save-dialog-deny': 'No'
+        've-scribe-save-dialog-deny': 'No',
+        've-scribe-launch-prompt-msg': 'Do you wish to use Scribe?',
+        've-scribe-launch-scribe-accept': 'Yes',
+        've-scribe-launch-scribe-deny': 'No'
     });
 }
 
@@ -201,13 +204,13 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      */
 
     function showSlide(index, slides) {
-        for (var i = 0; i < slides.length; i++) {
-            if (i === index) {
-                slides[i].style.display = "block";
-            } else {
-                slides[i].style.display = "none";
-            }
-        }
+    	for(var i = 0; i < slides.length; i++){
+    		if( i === index ){
+    			slides[i].style.display = "block";
+    		}else{
+    			slides[i].style.display = "none";
+    		}
+    	}
     }
 
     /**
@@ -229,7 +232,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      * @return {HTMLObjectElement} - the html object to be added on the slider
      */
 
-    function makeSliderHtml(section_number) {
+    function makeSliderHtml( section_number ) {
         // TODO: We have to generate the sections with id mw-scribe-ref-box
         // dynamically given the data we have from resources
         var html = '<div id="mw-scribe-slider-' + section_number + '">' +
@@ -249,7 +252,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
     function addSliderSectionChildNodes(section_number, active_section_title) {
         if ($("#slideshow-container-" + (section_number - 1).toString())) {
-            var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides' + section_number.toString())
+            var slides1 = $("#slideshow-container-" + (section_number - 1).toString()).children('.mySlides'+section_number.toString())
 
             for (var i = 0; i < slides1.length; i++) {
                 if (slides1[i].className.split(' ')[0]) {
@@ -263,13 +266,13 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 var resource = response.resources;
                 resource.forEach(function (item) {
                     $("#slideshow-container-" + section_number.toString()).append(
-                        '<div class="fade mySlides' + section_number.toString() + '">' +
+                        '<div class="fade mySlides'+section_number.toString()+'">' +
                         '<div class="text">' +
                         '<div class=\'mw-scribe-ref-box\'>' +
-                        '<p class=\'mw-scribe-ref-title\'>' + 'The title of the reference is going to appear here' + '</p>' +
+                        '<p class=\'mw-scribe-ref-title\'>' + item.publication_title + '</p>' +
                         '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
                         '<div class=\'mw-scribe-ref-link-box\'>' +
-                        '<p class=\'mw-scribe-ref-link\'><a>' + item.url + '</a></p>' +
+                        '<p class=\'mw-scribe-ref-link\'><a>' + item.url + '</a></p>'+
                         '<p id=\'mw-scribe-' + section_number.toString() + '-ref-data\'></p>' +
                         '</div>' +
                         '</div>' +
@@ -291,7 +294,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                 // setSliderContainerStyle('slideshow-container');
 
                 var slides = []
-                slides = document.getElementsByClassName("mySlides" + section_number.toString());
+                slides = document.getElementsByClassName("mySlides"+ section_number.toString() );
                 loadAllReferenceSlides(slides);
                 slides[0].style.display = "block";
             });
@@ -426,7 +429,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         addReferenceButtonClickAction(referenceAddButton, section.number);
 
         referenceSection = new OO.ui.LabelWidget({
-            id: 'mw-scribe-reference-anchor-' + section.number,
+            id: 'mw-scribe-reference-anchor-'+ section.number,
             classes: ['mw-scribe-reference-section']
         });
 
@@ -476,11 +479,11 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      */
 
     function activeOnClickEventForNext(nextClass, sectionNumber) {
-        var slides = document.getElementsByClassName("mySlides" + sectionNumber);
+        var slides = document.getElementsByClassName( "mySlides" + sectionNumber );
         $(nextClass).on('click', function () {
-            if (slideIndex === slides.length - 1) {
-                slideIndex = -1;
-            }
+        	if( slideIndex === slides.length - 1 ){
+        		slideIndex = -1;
+        	}
             slideIndex++;
             showSlide(slideIndex, slides);
         });
@@ -492,12 +495,12 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
      */
 
     function activeOnClickEventForPrev(prevClass, sectionNumber) {
-        var slides = document.getElementsByClassName("mySlides" + sectionNumber);
+        var slides = document.getElementsByClassName( "mySlides"+sectionNumber );
         $(prevClass).on('click', function () {
-            if (slideIndex - 1 < 0) {
-                slideIndex = slides.length
-            }
-            slideIndex--;
+        	if( slideIndex - 1 < 0){
+        		slideIndex = slides.length
+        	}
+        	slideIndex--;
             showSlide(slideIndex, slides);
         });
     }
@@ -862,8 +865,8 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                             }
                         }
                     });
-
-
+                    
+					
                     if ((viewControl + 1) === selectedSectionsToEdit.length) {
                         this.actions.setMode('final');
                     }
@@ -875,18 +878,18 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         // sectionNumber is the section number the user chose to edit
                         sectionNumber = selectedSectionsToEdit[viewControl];
                         this.stackLayout.setItem(stackPanels[sectionNumber]);
-
+                        
                         // current panel Item slider is built here
                         var currentPanelItem = this.stackLayout.getCurrentItem()
-
-                        var currentRefLSider = document.getElementById('mw-scribe-reference-anchor-' + sectionNumber)
-                        currentRefLSider.innerHTML = makeSliderHtml(sectionNumber)
-
-
-                        activeOnClickEventForNext('.next', sectionNumber.toString());
-                        activeOnClickEventForPrev('.prev', sectionNumber.toString());
-                        slideIndex = 0;
-
+                        
+						var currentRefLSider = document.getElementById( 'mw-scribe-reference-anchor-' + sectionNumber)
+						currentRefLSider.innerHTML = makeSliderHtml(sectionNumber)
+						
+						
+		                activeOnClickEventForNext( '.next', sectionNumber.toString());
+		                activeOnClickEventForPrev( '.prev', sectionNumber.toString());
+						slideIndex = 0;
+						
                         // We get the active section title to be able to get suggestion links from server
                         activeSectionTitle = $('#mw-scribe-section-' + sectionNumber + '-title').text();
                         // Populate the edit box with the content of the sections from the article
@@ -972,6 +975,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
     mw.hook('ve.activationComplete').add(function () {
         var articleSectionsPromise, homePageFieldSetElements, page_sections;
         articleSectionsPromise = getArticleListPromise(mw.config.get('wgTitle'));
+        	console.log('Ve is activated')
         new mw.Api().get({
             action: "query",
             titles: [mw.config.get('wgTitle')],
