@@ -9,7 +9,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         've-scribe-btn-done': 'Done',
         've-scribe-button-group-link-btn': 'Link',
         've-scribe-button-group-cite-btn': 'Cite',
-        've-scribe-no-section-selected-dialog-msg': 'Please select a section',
+        've-scribe-no-section-selected-dialog-macsg': 'Please select a section',
         've-scribe-server-error': 'Unable to Reach Server Right now',
         've-scribe-save-prompt-msg': 'Save for later?',
         've-scribe-edit-summary': 'This page was edited using scribe',
@@ -132,7 +132,6 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
             padded: true,
             expanded: false,
             align: 'center',
-            scrollable: true,
             classes: ['container']
         });
         if (sectionName != 'undefined' && sectionNumber != -1) {
@@ -272,7 +271,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                         '<p class=\'mw-scribe-ref-title\'>' + item.publication_title + '</p>' +
                         '<p class=\'mw-scribe-ref-text\'>' + item.content + '</p>' +
                         '<div class=\'mw-scribe-ref-link-box\'>' +
-                        '<p class=\'mw-scribe-ref-link\'><a>' + item.url + '</a></p>' +
+                        '<p class=\'mw-scribe-ref-link\'>' + item.url + '</p>' +
                         '<p id=\'mw-scribe-' + section_number.toString() + '-ref-data\'></p>' +
                         '</div>' +
                         '</div>' +
@@ -341,6 +340,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
         } else {
             textEditor.value += link;
         }
+        textEditor.focus();
     }
 
     /**
@@ -647,7 +647,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
                                         first: { wt: templateData[2] },
                                         last: { wt: templateData[2] },
                                         title: { wt: templateData[1] },
-                                        date: { wt: 'January,2 2020' }, //templateData[3]
+                                        date: { wt: 'January 2, 2015' }, //templateData[3]
                                         url: { wt: entryUrl }
                                     }
                                 }
@@ -974,6 +974,7 @@ if (!mw.messages.exists('ve-scribe-dialog-title')) {
 
     mw.hook('ve.activationComplete').add(function () {
         var articleSectionsPromise, homePageFieldSetElements, page_sections;
+        console.log('activated VE with success!')
         articleSectionsPromise = getArticleListPromise(mw.config.get('wgTitle'));
         OO.ui.confirm( mw.msg( 've-scribe-launch-prompt-msg' ),
             {
